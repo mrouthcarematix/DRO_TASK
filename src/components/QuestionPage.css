@@ -1,0 +1,164 @@
+.question-page {
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  padding: 10px;
+  position: relative;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.question-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.question-number {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #4caf50 !important; /* Ensuring green color for the progress bar */
+}
+.navigation-buttons {
+  display: flex;
+  margin-top: 20px;
+}
+
+.nav-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.nav-button:hover {
+  background-color: #0056b3;
+}
+
+.content {
+  padding: 20px;
+  position: relative;
+}
+
+.error-message {
+  color: #ff4d4d; /* Bright red color for error */
+  background-color: #ffe6e6; /* Light red background for better visibility */
+  border: 1px solid #ff4d4d; /* Border to emphasize the error */
+  padding: 10px 20px; /* Padding for better spacing */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 1rem; /* Spacing below the message */
+  font-size: 16px; /* Slightly larger font for readability */
+  text-align: center; /* Center align the text */
+}
+
+.optional-message {
+  color: #4caf50; /* Green color for optional message */
+  background-color: #e8f5e9; /* Light green background for better visibility */
+  border: 1px solid #4caf50; /* Border to emphasize the message */
+  padding: 10px 20px; /* Padding for better spacing */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 1rem; /* Spacing below the message */
+  font-size: 16px; /* Slightly larger font for readability */
+  text-align: center; /* Center align the text */
+}
+
+.question-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.question-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.info-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.audio-control {
+  margin-bottom: 20px;
+}
+
+.options label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.slider-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.slider-scale-item {
+  font-size: 14px;
+}
+
+
+/* Style for the close button */
+.close-button {
+  background-color: transparent; /* No background */
+  border: none; /* No border */
+  font-size: 24px; /* Adjust size as needed */
+  cursor: pointer; /* Pointer cursor on hover */
+  padding: 0; /* No padding */
+  margin: 0; /* No margin */
+  position: absolute; /* Positioning */
+  top: 10px; /* Adjust positioning as needed */
+  right: 10px; /* Adjust positioning as needed */
+  display: flex; /* Center the icon */
+  align-items: center; /* Center the icon */
+  justify-content: center; /* Center the icon */
+  color: #000; /* Icon color */
+}
+
+.close-button:hover {
+  color: #ff0000; /* Change color on hover */
+}
+
+/* If you use an icon font like FontAwesome */
+.close-button i {
+  font-family: 'FontAwesome'; /* Or your icon font */
+}
+

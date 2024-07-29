@@ -1,0 +1,107 @@
+/* Container */
+.survey-container {
+  padding: 3rem 2rem;
+  background-color: #f8f9fa; /* Light background color for the container */
+}
+
+/* Header */
+.survey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #ffffff; /* White background for the header */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border-radius: 5px;
+}
+
+/* Title */
+.survey-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+/* Subtitle */
+.survey-subtitle {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+/* Estimated Time */
+.estimated-time {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-left: 555px;
+}
+
+.estimated-time-value{
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+/* Intro Text */
+.survey-intro {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  margin-left: -242px;
+  font-weight: bold;
+}
+
+/* Instruction Cards */
+.survey-instructions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.instruction-card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+  flex: 1;
+  margin: 0 0.5rem;
+}
+
+.instruction-card:hover {
+  transform: translateY(-5px);
+}
+
+.instruction-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.instruction-card .card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.instruction-card .card-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+  font-weight:bold;
+}
+
+.see-more-link {
+  font-size: 0.875rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.see-more-link:hover {
+  text-decoration: underline;
+}
+
+

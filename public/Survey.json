@@ -1,0 +1,939 @@
+{
+    "survey": {
+        "id": 146,
+        "programSurveyId": 1075,
+        "language": "EN",
+        "surveyInstructions": [
+            {
+                "type": "TIMING",
+                "sequence": 1,
+                "header": "Intstruction:",
+                "description": "It will take about 5 minutes to answer this PRO, but you can take as long as you need."
+            },
+            {
+                "type": "AUTOSAVE_TRUE",
+                "sequence": 2,
+                "header": "Intstruction:",
+                "description": "Your progress will be saved automatically. Use 'Close' link at the top to save progress if you choose to exit before PRO completion."
+            },
+            {
+                "type": "WRONG_ANSWER",
+                "sequence": 3,
+                "header": "Intstruction:",
+                "description": "There are no wrong answers. The questionnaire is about your feelings about things."
+            },
+            {
+                "type": "GOBACK_TRUE",
+                "sequence": 4,
+                "header": "Intstruction:",
+                "description": "You can go back and check your answers for the previous questions anytime you want."
+            }
+        ],
+        "surveyIntroduction": {
+            "text": "This PRO contains all answer types that DRO System supports. This questionnaire is meant for Demo Purpose only.",
+            "url": ""
+        },
+        "name": "Sample PRO",
+        "code": "SPRO",
+        "type": "QUESTIONNAIRE",
+        "group": "PRO",
+        "programInfo": {
+            "programId": 570,
+            "organizationName": "QA Clinical",
+            "programName": "Program 02",
+            "logoURL": null,
+            "code": "PRG001",
+            "twoFactorAuth": false,
+            "organizationId": 0,
+            "adhoc": false
+        },
+        "surveyConfig": {
+            "forceLandscape": true,
+            "singleQuestion": true,
+            "grouping": true,
+            "groupingNavigation": true,
+            "groupingProgress": true,
+            "enableProgressbar": true,
+            "enableProgressText": true,
+            "validity": 72000,
+            "unscheduled": true,
+            "online": false,
+            "important": false,
+            "retakeAllowed": true,
+            "autoSave": true,
+            "branching": false
+        },
+        "pages": [
+            {
+                "id": 2705,
+                "pageNumber": 1,
+                "sections": [
+                    {
+                        "id": 2706,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2774,
+                                "questionType": "VIDEO",
+                                "answerType": "RADIO_BUTTON",
+                                "text": "Kindly watch the video till the end and then select one appropriate answer from below options. Video loading is dependent on the internet bandwidth, hence it may take some time to load.",
+                                "url": "https://dro.carematix.com/assets/video/video_1.mp4",
+                                "helpText": "Choose any one of the following.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13059,
+                                        "text": "Excellent",
+                                        "sequence": 1,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13060,
+                                        "text": "Very Good",
+                                        "sequence": 2,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13061,
+                                        "text": "Good",
+                                        "sequence": 3,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13062,
+                                        "text": "Fair",
+                                        "sequence": 4,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13063,
+                                        "text": "Poor",
+                                        "sequence": 5,
+                                        "score": 1,
+                                        "url": ""
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2705,
+                        "nextPageId": 2706,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2706,
+                "pageNumber": 2,
+                "sections": [
+                    {
+                        "id": 2707,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2775,
+                                "questionType": "AUDIO",
+                                "answerType": "RADIO_BUTTON",
+                                "text": "Listen to the audio and answer the question. Compared to one year ago how would you rate your health in general now?",
+                                "url": "https://dro.carematix.com/assets/audio/audio_1.mp3",
+                                "helpText": "Choose any one of the following.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13064,
+                                        "text": "Much better now than one year ago",
+                                        "sequence": 1,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13065,
+                                        "text": "Somewhat better now than one year ago",
+                                        "sequence": 2,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13066,
+                                        "text": "About the same",
+                                        "sequence": 3,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13067,
+                                        "text": "Somewhat worse now than one year ago",
+                                        "sequence": 4,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13068,
+                                        "text": "Much worse now than one year ago",
+                                        "sequence": 5,
+                                        "score": 1,
+                                        "url": ""
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2706,
+                        "nextPageId": 2707,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2707,
+                "pageNumber": 3,
+                "sections": [
+                    {
+                        "id": 2708,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2776,
+                                "questionType": "GENERAL",
+                                "answerType": "RADIO_BUTTON",
+                                "text": "How much bodily pain have you had during the past 4 weeks?",
+                                "url": "",
+                                "helpText": "Choose any one of the following.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13069,
+                                        "text": "Distressing",
+                                        "sequence": 1,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/distressing.png"
+                                    },
+                                    {
+                                        "id": 13070,
+                                        "text": "No pain",
+                                        "sequence": 2,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/nopain.png"
+                                    },
+                                    {
+                                        "id": 13071,
+                                        "text": "Discomforting",
+                                        "sequence": 3,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/discomforting.png"
+                                    },
+                                    {
+                                        "id": 13072,
+                                        "text": "Unimaginable unspeakable",
+                                        "sequence": 4,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/Unimaginable-unspeakable.png"
+                                    },
+                                    {
+                                        "id": 13073,
+                                        "text": "Utterly Horrible",
+                                        "sequence": 5,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/utterly-horrible.png"
+                                    },
+                                    {
+                                        "id": 13074,
+                                        "text": "Intense",
+                                        "sequence": 6,
+                                        "score": 1,
+                                        "url": "https://dro.carematix.com/assets/img/questionnaire/QOL/intense.png"
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2707,
+                        "nextPageId": 2708,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2708,
+                "pageNumber": 4,
+                "sections": [
+                    {
+                        "id": 2709,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2777,
+                                "questionType": "GENERAL",
+                                "answerType": "RATING",
+                                "text": "How would you rate our service?",
+                                "url": "",
+                                "helpText": "Choose a star rating.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2708,
+                        "nextPageId": 2709,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2709,
+                "pageNumber": 5,
+                "sections": [
+                    {
+                        "id": 2710,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2778,
+                                "questionType": "GENERAL",
+                                "answerType": "IMAGE_UPLOAD",
+                                "text": "This question shows that users have option to upload image as type of answer.",
+                                "url": "",
+                                "helpText": "Please upload an Image.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2709,
+                        "nextPageId": 2710,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2710,
+                "pageNumber": 6,
+                "sections": [
+                    {
+                        "id": 2711,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2779,
+                                "questionType": "GENERAL",
+                                "answerType": "VIDEO_UPLOAD",
+                                "text": "This question shows that users have option to upload video file as type of answer.",
+                                "url": "",
+                                "helpText": "Please upload a video file.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2710,
+                        "nextPageId": 2711,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2711,
+                "pageNumber": 7,
+                "sections": [
+                    {
+                        "id": 2712,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2780,
+                                "questionType": "GENERAL",
+                                "answerType": "AUDIO_UPLOAD",
+                                "text": "This question shows that users have an option to upload audio file as type of answer.",
+                                "url": "",
+                                "helpText": "Please upload an audio file.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2711,
+                        "nextPageId": 2712,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2712,
+                "pageNumber": 8,
+                "sections": [
+                    {
+                        "id": 2713,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2781,
+                                "questionType": "GENERAL",
+                                "answerType": "RICH_TEXT",
+                                "text": "How can we improve the survey? Please write your suggestions below.",
+                                "url": "",
+                                "helpText": "Please write your suggestions.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2712,
+                        "nextPageId": 2713,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2713,
+                "pageNumber": 9,
+                "sections": [
+                    {
+                        "id": 2714,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2782,
+                                "questionType": "GENERAL",
+                                "answerType": "CHECK_BOX",
+                                "text": "Kindly help to describe your personal habits. Select All the options which are relevant. If no option applies then only select 'None of the above' option.",
+                                "url": "",
+                                "helpText": "Select All the options which are relevant",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13075,
+                                        "text": "Tobacco",
+                                        "sequence": 1,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13076,
+                                        "text": "Alcohol",
+                                        "sequence": 2,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13077,
+                                        "text": "Smoking",
+                                        "sequence": 3,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13078,
+                                        "text": "Narcotic Substances",
+                                        "sequence": 4,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13079,
+                                        "text": "None of the above",
+                                        "sequence": 5,
+                                        "score": 0,
+                                        "url": ""
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2713,
+                        "nextPageId": 2714,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2714,
+                "pageNumber": 10,
+                "sections": [
+                    {
+                        "id": 2715,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2783,
+                                "questionType": "GENERAL",
+                                "answerType": "BP",
+                                "text": "Kindly enter your blood pressure values.",
+                                "url": "",
+                                "helpText": "Enter your BP Monitor reading.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2714,
+                        "nextPageId": 2715,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2715,
+                "pageNumber": 11,
+                "sections": [
+                    {
+                        "id": 2716,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2784,
+                                "questionType": "GENERAL",
+                                "answerType": "SLIDER_WITH_SCALE",
+                                "text": "Exercise brings on my fatigue. Please answer the question by moving the slider.",
+                                "url": "",
+                                "helpText": "Please answer the question by moving the slider.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2715,
+                        "nextPageId": 2716,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2716,
+                "pageNumber": 12,
+                "sections": [
+                    {
+                        "id": 2717,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2785,
+                                "questionType": "GENERAL",
+                                "answerType": "DROP_DOWN",
+                                "text": "How much bodily pain have you had during the last week?",
+                                "url": "",
+                                "helpText": "Please answer the question by selecting an answer.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13080,
+                                        "text": "None",
+                                        "sequence": 1,
+                                        "score": 0,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13081,
+                                        "text": "Very Mild",
+                                        "sequence": 2,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13082,
+                                        "text": "Mild",
+                                        "sequence": 3,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13083,
+                                        "text": "Moderate",
+                                        "sequence": 4,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13084,
+                                        "text": "Severe",
+                                        "sequence": 5,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13085,
+                                        "text": "Very Severe",
+                                        "sequence": 6,
+                                        "score": 1,
+                                        "url": ""
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2746,
+                        "text": "This is section text",
+                        "url": "",
+                        "sequence": 2,
+                        "questions": [
+                            {
+                                "id": 2918,
+                                "questionType": "GENERAL",
+                                "answerType": "RADIO_BUTTON",
+                                "text": "Do you take any medicine?",
+                                "url": "",
+                                "helpText": "Choose any one of the following.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [
+                                    {
+                                        "id": 13331,
+                                        "text": "Yes",
+                                        "sequence": 1,
+                                        "score": 1,
+                                        "url": ""
+                                    },
+                                    {
+                                        "id": 13332,
+                                        "text": "No",
+                                        "sequence": 2,
+                                        "score": 2,
+                                        "url": ""
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2716,
+                        "nextPageId": 2717,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2717,
+                "pageNumber": 13,
+                "sections": [
+                    {
+                        "id": 2718,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2786,
+                                "questionType": "GENERAL",
+                                "answerType": "DATE",
+                                "text": "When did you complete your last survey? Enter date of last survey submission.",
+                                "url": "",
+                                "helpText": "Enter date of last survey submission.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": true
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2717,
+                        "nextPageId": 2718,
+                        "rule": ""
+                    }
+                ]
+            },
+            {
+                "id": 2718,
+                "pageNumber": 14,
+                "sections": [
+                    {
+                        "id": 2719,
+                        "text": "",
+                        "url": "",
+                        "sequence": 1,
+                        "questions": [
+                            {
+                                "id": 2787,
+                                "questionType": "GENERAL",
+                                "answerType": "TIME",
+                                "text": "When did you have your last meal?",
+                                "url": "",
+                                "helpText": "Enter time of last meal.",
+                                "sequence": 1,
+                                "validationRules": [],
+                                "choices": [],
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
+                "navigationRules": [
+                    {
+                        "currentPageId": 2718,
+                        "nextPageId": 0,
+                        "rule": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "userSurveySession": {
+        "id": 2642,
+        "programSurveyId": 1075,
+        "programUserID": 1145,
+        "userSurveySessionDetail": {
+            "id": 0,
+            "progressStatus": "EXPIRED",
+            "percentageComplete": 64.29,
+            "startTime": 1722013207000,
+            "endTime": 1722087072000,
+            "lastSubmissionTime": 1722023514000,
+            "timeSpent": 2036,
+            "lastAnswerPageId": 2714,
+            "declined": false
+        },
+        "scheduledSession": {
+            "id": 0,
+            "scheduledDate": 1721952000000,
+            "startTime": 1721997072000,
+            "endTime": 1722069072000,
+            "scheduleType": "UNSCHEDULED",
+            "userScheduleAssignId": 0
+        },
+        "pageNavigations": [
+            {
+                "previousPageId": 0,
+                "currentPageId": 2705,
+                "nextPageId": 2706
+            },
+            {
+                "previousPageId": 2705,
+                "currentPageId": 2706,
+                "nextPageId": 2707
+            },
+            {
+                "previousPageId": 2706,
+                "currentPageId": 2707,
+                "nextPageId": 2708
+            },
+            {
+                "previousPageId": 2707,
+                "currentPageId": 2708,
+                "nextPageId": 2709
+            },
+            {
+                "previousPageId": 2708,
+                "currentPageId": 2709,
+                "nextPageId": 2710
+            },
+            {
+                "previousPageId": 2709,
+                "currentPageId": 2710,
+                "nextPageId": 2711
+            },
+            {
+                "previousPageId": 2710,
+                "currentPageId": 2711,
+                "nextPageId": 2712
+            },
+            {
+                "previousPageId": 2711,
+                "currentPageId": 2712,
+                "nextPageId": 2713
+            },
+            {
+                "previousPageId": 2712,
+                "currentPageId": 2713,
+                "nextPageId": 2714
+            },
+            {
+                "previousPageId": 2713,
+                "currentPageId": 2714,
+                "nextPageId": 0
+            }
+        ],
+        "userAnswerLogs": [
+            {
+                "id": 97004,
+                "questionId": 2774,
+                "questionCode": null,
+                "choiceId": 13059,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 1.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97005,
+                "questionId": 2775,
+                "questionCode": null,
+                "choiceId": 13065,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 1.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97006,
+                "questionId": 2776,
+                "questionCode": null,
+                "choiceId": 13069,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 1.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97007,
+                "questionId": 2777,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "4",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97008,
+                "questionId": 2778,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97009,
+                "questionId": 2779,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97010,
+                "questionId": 2780,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97011,
+                "questionId": 2781,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "Daad",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 97012,
+                "questionId": 2782,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "13076,13077,13078",
+                "score": 0.0,
+                "answerTypeId": 0
+            },
+            {
+                "id": 0,
+                "questionId": 0,
+                "questionCode": null,
+                "choiceId": 0,
+                "fileId": 0,
+                "answerFreeText": "",
+                "score": 0.0,
+                "answerTypeId": 0
+            }
+        ],
+        "unscheduled": true
+    }
+}
