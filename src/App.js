@@ -1,24 +1,36 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './app/store';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import StartPage from './components/StartPage';
 import Survey from './components/Survey';
 import QuestionPage from './components/QuestionPage';
-import StartPage from './components/StartPage';
 import ThankYou from './components/ThankYou';
 
 const App = () => {
+  const { survey } = useSelector((state) => state.survey);
+  const progressStatus = survey?.progressStatus;
+
+  const getInitialRoute = () => {
+    switch (progressStatus) {
+      case 'COMPLETED':
+      case 'EXPIRED':
+      case 'STARTED':
+        return '/survey';
+      case 'NOT_STARTED':
+      default:
+        return '/';
+    }
+  };
+
   return (
-    <Provider store={store}>
-      <Router>
-        <Routes>
+    <Router>
+      <Routes>
         <Route path="/" element={<StartPage />} />
-          <Route path="/Survey" element={<Survey />} />
-          <Route path="/question/:pageIndex" element={<QuestionPage />} />
-          <Route path="/different-page" element={<ThankYou />} />
-        </Routes>
-      </Router>
-    </Provider>
+        <Route path="/survey" element={<Survey />} />
+        <Route path="/question/:pageIndex" element={<QuestionPage />} />
+        <Route path="/different-page" element={<ThankYou />} />
+      </Routes>
+    </Router>
   );
 };
 

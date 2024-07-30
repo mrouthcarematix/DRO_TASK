@@ -4,20 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 const StartPage = () => {
- const { survey } = useSelector((state) => state.survey);
+  const { survey } = useSelector((state) => state.survey);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (survey && survey.language) {
       const languageCode = survey.language.toLowerCase();
-      if (['en', 'hn', 'es'].includes(languageCode)) { 
+      if (['en', 'hn', 'es'].includes(languageCode)) {
         i18n.changeLanguage(languageCode);
       } else {
         console.warn(`Unsupported language code: ${languageCode}`);
       }
     }
-  }, [survey]);
+  }, [survey, i18n]);
 
   const handleStartSurvey = () => {
     navigate('/Survey/');

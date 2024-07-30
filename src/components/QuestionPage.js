@@ -43,7 +43,14 @@ const QuestionPage = () => {
 
   if (!survey) return <div>No survey data available</div>;
 
-  const question = survey.pages[currentPageIndex].sections[0].questions[0];
+  const page = survey.pages[currentPageIndex];
+  if (!page) return <div>No such page</div>;
+
+  const section = page.sections?.[0];
+  if (!section) return <div>No sections available</div>;
+
+  const question = section.questions?.[0];
+  if (!question) return <div>No questions available</div>;
 
   const handlePrevious = () => {
     if (currentPageIndex > 0) {

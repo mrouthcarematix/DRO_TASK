@@ -758,182 +758,30 @@
         ]
     },
     "userSurveySession": {
-        "id": 2642,
+        "id": 2645,
         "programSurveyId": 1075,
         "programUserID": 1145,
         "userSurveySessionDetail": {
             "id": 0,
-            "progressStatus": "EXPIRED",
-            "percentageComplete": 64.29,
-            "startTime": 1722013207000,
-            "endTime": 1722087072000,
-            "lastSubmissionTime": 1722023514000,
-            "timeSpent": 2036,
-            "lastAnswerPageId": 2714,
+            "progressStatus": "NOT_STARTED",
+            "percentageComplete": 0.0,
+            "startTime": 0,
+            "endTime": 0,
+            "lastSubmissionTime": 0,
+            "timeSpent": 0,
+            "lastAnswerPageId": 0,
             "declined": false
         },
         "scheduledSession": {
             "id": 0,
-            "scheduledDate": 1721952000000,
-            "startTime": 1721997072000,
-            "endTime": 1722069072000,
+            "scheduledDate": 0,
+            "startTime": 0,
+            "endTime": 0,
             "scheduleType": "UNSCHEDULED",
             "userScheduleAssignId": 0
         },
-        "pageNavigations": [
-            {
-                "previousPageId": 0,
-                "currentPageId": 2705,
-                "nextPageId": 2706
-            },
-            {
-                "previousPageId": 2705,
-                "currentPageId": 2706,
-                "nextPageId": 2707
-            },
-            {
-                "previousPageId": 2706,
-                "currentPageId": 2707,
-                "nextPageId": 2708
-            },
-            {
-                "previousPageId": 2707,
-                "currentPageId": 2708,
-                "nextPageId": 2709
-            },
-            {
-                "previousPageId": 2708,
-                "currentPageId": 2709,
-                "nextPageId": 2710
-            },
-            {
-                "previousPageId": 2709,
-                "currentPageId": 2710,
-                "nextPageId": 2711
-            },
-            {
-                "previousPageId": 2710,
-                "currentPageId": 2711,
-                "nextPageId": 2712
-            },
-            {
-                "previousPageId": 2711,
-                "currentPageId": 2712,
-                "nextPageId": 2713
-            },
-            {
-                "previousPageId": 2712,
-                "currentPageId": 2713,
-                "nextPageId": 2714
-            },
-            {
-                "previousPageId": 2713,
-                "currentPageId": 2714,
-                "nextPageId": 0
-            }
-        ],
-        "userAnswerLogs": [
-            {
-                "id": 97004,
-                "questionId": 2774,
-                "questionCode": null,
-                "choiceId": 13059,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 1.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97005,
-                "questionId": 2775,
-                "questionCode": null,
-                "choiceId": 13065,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 1.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97006,
-                "questionId": 2776,
-                "questionCode": null,
-                "choiceId": 13069,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 1.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97007,
-                "questionId": 2777,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "4",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97008,
-                "questionId": 2778,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97009,
-                "questionId": 2779,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97010,
-                "questionId": 2780,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97011,
-                "questionId": 2781,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "Daad",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 97012,
-                "questionId": 2782,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "13076,13077,13078",
-                "score": 0.0,
-                "answerTypeId": 0
-            },
-            {
-                "id": 0,
-                "questionId": 0,
-                "questionCode": null,
-                "choiceId": 0,
-                "fileId": 0,
-                "answerFreeText": "",
-                "score": 0.0,
-                "answerTypeId": 0
-            }
-        ],
+        "pageNavigations": [],
+        "userAnswerLogs": [],
         "unscheduled": true
     }
 }

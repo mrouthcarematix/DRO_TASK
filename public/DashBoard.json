@@ -1,0 +1,60 @@
+{
+    "userInfo": {
+        "userName": "vinodkumar@yopmail.com",
+        "firstName": "Vinod",
+        "lastName": "Kumar",
+        "userImage": null,
+        "lastVisitedDate": 1721974844000,
+        "programUserId": 1145,
+        "userId": 1151,
+        "programInfo": {
+            "programId": 570,
+            "organizationName": "QA Clinical",
+            "programName": "Program 02",
+            "logoURL": null,
+            "code": null,
+            "twoFactorAuth": false,
+            "organizationId": 69,
+            "adhoc": false
+        },
+        "token": null,
+        "emailAddress": "vinodkumar@yopmail.com",
+        "cellPhone": "8989898989",
+        "hasConsent": false,
+        "firstLogin": false
+    },
+    "userSurveySummary": {
+        "fromDate": 1722277589000,
+        "toDate": 1722279389173,
+        "assigned": 0,
+        "completed": 0,
+        "active": 0,
+        "declined": 0,
+        "expired": 0,
+        "averagePerWeek": 0.0
+    },
+    "userSurveySessions": [
+        {
+            "programSurveyId": 1075,
+            "surveyId": 0,
+            "surveyName": "Sample PRO",
+            "isRetakeAllowed": true,
+            "isImportant": false,
+            "isUnscheduled": true,
+            "isAutoSave": true,
+            "surveySessionInfo": {
+                "scheduleSessionId": 0,
+                "userSurveySessionId": 2645,
+                "scheduleDate": 0,
+                "startTime": 0,
+                "endTime": 0,
+                "percentageCompleted": 0.0,
+                "progressStatus": "NOT_STARTED",
+                "scheduleType": "UNSCHEDULED",
+                "userStartTime": 0,
+                "userEndTime": 0,
+                "declined": false
+            }
+        }
+    ]
+}

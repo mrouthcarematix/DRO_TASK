@@ -12,7 +12,7 @@ const surveySlice = createSlice({
   },
   reducers: {
     nextPage: (state) => {
-      if (state.currentPage < state.survey.pages.length - 1) {
+      if (state.survey && state.survey.pages && state.currentPage < state.survey.pages.length - 1) {
         state.currentPage += 1;
       }
     },
