@@ -20,12 +20,13 @@ const QuestionPage = () => {
   const navigate = useNavigate();
   const { survey, currentPage, answers } = useSelector((state) => state.survey);
   const currentPageIndex = parseInt(pageIndex, 10);
-
-  const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || {});
+  //const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || {});
+  const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || { question: [] });
   const [showResults, setShowResults] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let updatedAnswers=[];
 
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
@@ -41,19 +42,18 @@ const QuestionPage = () => {
     setUserAnswer(answers[currentPageIndex] || {});
   }, [answers, currentPageIndex]);
 
-  if (!survey) return <div>No survey data available</div>;
+  if (!survey || !survey.pages) return <div>No survey data available</div>;
+  if (currentPageIndex < 0 || currentPageIndex >= survey.pages.length) return <div>Invalid page index</div>;
 
   const page = survey.pages[currentPageIndex];
-  if (!page) return <div>No such page</div>;
+  if (!page || !page.sections || !page.sections[0] || !page.sections[0].questions || !page.sections[0].questions[0]) {
+    return <div>Invalid survey structure</div>;
+  }
 
-  const section = page.sections?.[0];
-  if (!section) return <div>No sections available</div>;
-
-  const question = section.questions?.[0];
-  if (!question) return <div>No questions available</div>;
-
+  const question = page.sections[0].questions[0];
   const handlePrevious = () => {
     if (currentPageIndex > 0) {
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
       dispatch(prevPage());
       navigate(`/question/${currentPageIndex - 1}`);
     }
@@ -77,9 +77,7 @@ const QuestionPage = () => {
 
   const handleSave = () => {
     dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
-    //setShowResults(true);
-    dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
-    navigate('/different-page');
+    setShowResults(true);
   };
 
   const handleSkip = () => {
@@ -88,14 +86,20 @@ const QuestionPage = () => {
     navigate(`/question/${currentPageIndex + 1}`);
   };
 
-  const handleAnswerChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-    setUserAnswer((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
-    }));
+  const handleAnswerChange = (event) => {
+    const { name, value, checked } = event.target;
+    if (question.answerType === 'CHECK_BOX') {
+      const updatedAnswers = checked
+        ? [...(Array.isArray(userAnswer.question) ? userAnswer.question : []), value]
+        : userAnswer.question.filter((answer) => answer !== value);
+      setUserAnswer({ question: updatedAnswers });
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { question: updatedAnswers } }));
+    } else {
+      setUserAnswer({ [name]: value });
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { [name]: value } }));
+    }
   };
-
+  
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragOver(true);
@@ -134,7 +138,6 @@ const QuestionPage = () => {
     dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
     navigate('/different-page');
   };
-
   const renderQuestionContent = () => {
     switch (question.questionType) {
       case 'VIDEO':
@@ -147,7 +150,14 @@ const QuestionPage = () => {
             {question.helpText && <p className="help-text">{question.helpText}</p>}
             {question.choices.map((choice) => (
               <div key={choice.id}>
-                <input type="radio" id={choice.id} name="question" value={choice.id} onChange={handleAnswerChange} />
+                <input
+                  type="radio"
+                  id={choice.id}
+                  name="question"
+                  value={choice.id}
+                  onChange={handleAnswerChange}
+                  checked={userAnswer.question == choice.id}
+                />
                 <label htmlFor={choice.id}>{choice.text}</label>
               </div>
             ))}
@@ -163,7 +173,14 @@ const QuestionPage = () => {
             {question.helpText && <p className="help-text">{question.helpText}</p>}
             {question.choices.map((choice) => (
               <div key={choice.id}>
-                <input type="radio" id={choice.id} name="question" value={choice.id} onChange={handleAnswerChange} />
+                <input
+                  type="radio"
+                  id={choice.id}
+                  name="question"
+                  value={choice.id}
+                  onChange={handleAnswerChange}
+                  checked={userAnswer.question == choice.id}
+                />
                 <label htmlFor={choice.id}>{choice.text}</label>
               </div>
             ))}
@@ -177,7 +194,14 @@ const QuestionPage = () => {
                 {question.helpText && <p className="help-text">{question.helpText}</p>}
                 {question.choices.map((choice) => (
                   <div key={choice.id}>
-                    <input type="radio" id={choice.id} name="question" value={choice.id} onChange={handleAnswerChange} />
+                    <input
+                      type="radio"
+                      id={choice.id}
+                      name="question"
+                      value={choice.id}
+                      onChange={handleAnswerChange}
+                      checked={userAnswer.question == choice.id}
+                    />
                     <label htmlFor={choice.id}>{choice.text}</label>
                   </div>
                 ))}
@@ -202,7 +226,12 @@ const QuestionPage = () => {
             return (
               <div>
                 {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <input type="file" accept="image/*" name="image" onChange={(e) => handleAnswerChange({ target: { name: 'image', value: e.target.files[0] } })} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  onChange={(e) => handleAnswerChange({ target: { name: 'image', value: e.target.files[0] } })}
+                />
               </div>
             );
           case 'VIDEO_UPLOAD':
@@ -245,21 +274,33 @@ const QuestionPage = () => {
                   name="richText"
                   onChange={handleAnswerChange}
                   className="large-textarea"
+                  value={userAnswer.richText || ''}
                 />
               </div>
             );
-          case 'CHECK_BOX':
-            return (
-              <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
-                {question.choices.map((choice) => (
-                  <div key={choice.id}>
-                    <input type="checkbox" id={choice.id} name="question" value={choice.id} onChange={handleAnswerChange} />
-                    <label htmlFor={choice.id}>{choice.text}</label>
-                  </div>
-                ))}
-              </div>
-            );
+            case 'CHECK_BOX':
+              return (
+                <div>
+                  {question.helpText && <p className="help-text">{question.helpText}</p>}
+                  {question.choices.map((choice) => {
+                    const choiceIdString = String(choice.id); 
+                    return (
+                      <div key={choice.id}>
+                        <input
+                          type="checkbox"
+                          id={choice.id}
+                          name="question"
+                          value={choice.id}
+                          onChange={handleAnswerChange}
+                          checked={userAnswer.question?.includes(choiceIdString)}
+                        />
+                        <label htmlFor={choice.id}>{choice.text}</label>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+  
           case 'BP':
             return (
               <div>
@@ -277,6 +318,7 @@ const QuestionPage = () => {
                     border: '1px solid #ccc',
                     borderRadius: '5px'
                   }}
+                  value={userAnswer.systolic || ''}
                 />
               </div>
             );
@@ -304,7 +346,7 @@ const QuestionPage = () => {
             return (
               <div>
                 {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <select name="dropdown" onChange={handleAnswerChange}>
+                <select name="dropdown" onChange={handleAnswerChange} value={userAnswer.dropdown || ''}>
                   {question.choices.map((choice) => (
                     <option key={choice.id} value={choice.id}>
                       {choice.text}
@@ -317,14 +359,14 @@ const QuestionPage = () => {
             return (
               <div>
                 {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <input type="date" name="date" onChange={handleAnswerChange} />
+                <input type="date" name="date" onChange={handleAnswerChange} value={userAnswer.date || ''} />
               </div>
             );
           case 'TIME':
             return (
               <div>
                 {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <input type="time" name="time" onChange={handleAnswerChange} />
+                <input type="time" name="time" onChange={handleAnswerChange} value={userAnswer.time || ''} />
               </div>
             );
           default:
@@ -344,7 +386,6 @@ const QuestionPage = () => {
     }
     return null;
   };
-
   return (
     <div className="question-page">
       {renderErrorMessage()}

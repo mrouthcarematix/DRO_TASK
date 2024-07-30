@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSurvey } from '../features/survey/surveyThunk';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { fetchSurvey } from '../features/survey/surveyThunk';
 import './Survey.css';
 import doctorCheckupImage from '../assets/image/doctor-checkup.jpg';
 
@@ -29,10 +29,8 @@ const Survey = () => {
 
   useEffect(() => {
     if (survey) {
-      console.log(survey.userSurveySession?.userSurveySessionDetail, '------userSurveySessionDetail_Survey----');
-
       const userSurveySessionDetail = survey.userSurveySession?.userSurveySessionDetail;
-      
+
       if (userSurveySessionDetail) {
         const { progressStatus, lastAnswerPageId } = userSurveySessionDetail;
         if (progressStatus === 'NOT_STARTED') {

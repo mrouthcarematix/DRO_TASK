@@ -1,8 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { setCurrentPage } from './surveySlice';
-
-
 // export const fetchSurvey = createAsyncThunk(
 //   'survey/fetchSurvey',
 //   async (_, thunkAPI) => {
@@ -38,21 +36,11 @@ export const fetchSurvey = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get('/Survey.json');
-      console.log('API Response:', response.data); 
-      
       const { survey, userSurveySession } = response.data;
-      console.log('Survey:', survey);
-      console.log('UserSurveySession:', userSurveySession);
-      
       if (userSurveySession) {
         const userSurveySessionDetail = userSurveySession.userSurveySessionDetail;
-        console.log('UserSurveySessionDetail:', userSurveySessionDetail);
-        
         if (userSurveySessionDetail) {
-          const { progressStatus, lastAnswerPageId } = userSurveySessionDetail;
-          console.log('ProgressStatus:', progressStatus);
-          console.log('LastAnswerPageId:', lastAnswerPageId);
-          
+          const { progressStatus, lastAnswerPageId } = userSurveySessionDetail;  
           if (progressStatus === 'NOT_STARTED') {
             thunkAPI.dispatch(setCurrentPage(0)); 
           } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {
