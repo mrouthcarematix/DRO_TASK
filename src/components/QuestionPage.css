@@ -162,3 +162,51 @@
   font-family: 'FontAwesome'; /* Or your icon font */
 }
 
+.video-upload-container {
+  margin: 20px 0;
+}
+
+.video-upload-section {
+  background-color: white;
+  border: 2px dashed #007bff;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.video-upload-input {
+  display: none;
+}
+
+.video-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.upload-icon {
+  width: 50px; /* Adjust size as necessary */
+  height: 50px; /* Adjust size as necessary */
+}
+
+.upload-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #007bff;
+}
+
+.video-preview {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 10px;
+}
+
+.help-text {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}

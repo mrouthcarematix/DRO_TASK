@@ -9,9 +9,10 @@ import StarRatings from 'react-star-ratings';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faInfoCircle,faUpload} from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import customVideoUploadIcon from '../assets/image/camera.png';
 
 const QuestionPage = () => {
   const { t } = useTranslation();
@@ -26,7 +27,8 @@ const QuestionPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let updatedAnswers=[];
+  const [showHelpText, setShowHelpText] = useState(false);
+  const [videoSrc, setVideoSrc] = useState(null);
 
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
@@ -99,7 +101,7 @@ const QuestionPage = () => {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { [name]: value } }));
     }
   };
-  
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragOver(true);
@@ -138,6 +140,39 @@ const QuestionPage = () => {
     dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
     navigate('/different-page');
   };
+
+  const handleVideoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const videoURL = URL.createObjectURL(file);
+      setVideoSrc(videoURL);
+    }
+  };
+
+  const renderVideoUploadSection = () => (
+    <div className="video-upload-container">
+      <div className="video-upload-section">
+        <label htmlFor="videoUpload" className="video-upload-label">
+          <img src={customVideoUploadIcon} alt="Upload Video" className="upload-icon" />
+          Please click on video icon to upload video
+        </label>
+        <input
+          type="file"
+          id="videoUpload"
+          name="videoUpload"
+          accept="video/*"
+          onChange={handleVideoUpload}
+          className="video-upload-input"
+        />
+      </div>
+      {videoSrc && (
+        <video controls className="video-preview">
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
+    </div>
+  );
   const renderQuestionContent = () => {
     switch (question.questionType) {
       case 'VIDEO':
@@ -145,9 +180,7 @@ const QuestionPage = () => {
           <div>
             <video width="320" height="240" controls>
               <source src={question.url} type="video/mp4" />
-              Your browser does not support the video tag.
             </video>
-            {question.helpText && <p className="help-text">{question.helpText}</p>}
             {question.choices.map((choice) => (
               <div key={choice.id}>
                 <input
@@ -235,23 +268,7 @@ const QuestionPage = () => {
               </div>
             );
           case 'VIDEO_UPLOAD':
-            return (
-              <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                className={`drop-zone ${dragOver ? 'drag-over' : ''}`}
-              >
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <input
-                  type="file"
-                  accept="video/*"
-                  name="video"
-                  onChange={(e) => handleAnswerChange({ target: { name: 'video', value: e.target.files[0] } })}
-                />
-                <p>Drag and drop a video file here or click to upload.</p>
-              </div>
-            );
+            return renderVideoUploadSection();
           case 'AUDIO_UPLOAD':
             return (
               <div>
@@ -446,6 +463,12 @@ const QuestionPage = () => {
         <div className="question-section">
           <p className="question-text">
             {question.text}
+            {question.helpText && (
+                <>
+                  <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
+                  {showHelpText && <span className="help-text">{question.helpText}</span>}
+                </>
+              )}
           </p>
           <div className="question-content">
             {renderQuestionContent()}
