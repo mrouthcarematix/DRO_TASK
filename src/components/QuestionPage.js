@@ -13,6 +13,8 @@ import { faTimes, faInfoCircle,faUpload} from '@fortawesome/free-solid-svg-icons
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import customVideoUploadIcon from '../assets/image/camera.png';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const QuestionPage = () => {
   const { t } = useTranslation();
@@ -140,6 +142,11 @@ const QuestionPage = () => {
     if (file) {
       handleAnswerChange({ target: { name: 'audio', value: file } });
     }
+  };
+  
+  const handleRichTextChange = (value) => {
+    setUserAnswer({ ...userAnswer, richText: value });
+    dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { richText: value } }));
   };
 
   const renderVideoUploadSection = () => (
@@ -289,19 +296,15 @@ const QuestionPage = () => {
                 )}
               </div>
             );
-          case 'RICH_TEXT':
-            return (
-              <div>
-                <textarea
-                  rows="10"
-                  cols="150"
-                  name="richText"
-                  onChange={handleAnswerChange}
-                  className="large-textarea"
+            case 'RICH_TEXT':
+              return (
+                <ReactQuill
+                  className="large-text-editor"
                   value={userAnswer.richText || ''}
+                  onChange={handleRichTextChange}
                 />
-              </div>
-            );
+              );
+            
             case 'CHECK_BOX':
               return (
                 <div>
