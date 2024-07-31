@@ -218,6 +218,13 @@ const QuestionPage = () => {
               <div>
                 {question.choices.map((choice) => (
                   <div key={choice.id}>
+                    {choice.url && (
+                      <div>
+                        <div className="image-preview">
+                          <img src={choice.url} alt="Uploaded" />
+                        </div>
+                      </div>
+                    )}
                     <input
                       type="radio"
                       id={choice.id}
