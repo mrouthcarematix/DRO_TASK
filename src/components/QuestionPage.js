@@ -137,7 +137,7 @@ const QuestionPage = () => {
         timeSpent: totalTimeSpent,
         declined: false,
         progressStatus: progressStatus,
-        lastAnswerPageId: survey.pages[survey.pages.length - 1].id,
+        lastAnswerPageId: survey.pages[survey.pages.length-1].id,
         startTime: Date.now(),
         percentageComplete: ((currentPageIndex + 1) / survey.pages.length) * 100,
         id: 0
@@ -147,20 +147,12 @@ const QuestionPage = () => {
     return transformedAnswers;
   };
   
-  
-
-  // const handleSave = () => {
-  //   const transformedData = transformAnswersToRequiredFormat();
-  //   console.log(transformedData,'----transformedData-----'); 
-  //   // dispatch(saveSurvey(transformedData));
-  //   setShowResults(true);
-  // };
-
   const handleSave = () => {
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData-----'); 
     dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
+    navigate(`/different-page`);
   };
 
   const handleSkip = () => {
@@ -225,8 +217,11 @@ const QuestionPage = () => {
 
   const handleConfirmClose = () => {
     setIsModalOpen(false);
-    dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
-    navigate('/different-page');
+    const transformedData = transformAnswersToRequiredFormat();
+    console.log(transformedData,'----transformedData not full-----'); 
+    dispatch(saveSurveyResponse(transformedData));
+    setShowResults(true);
+    navigate('/');
   };
 
   const handleVideoUpload = (event) => {
@@ -602,12 +597,12 @@ const QuestionPage = () => {
           </div>
         </div>
       </div>
-      {showResults && (
+      {/* {showResults && (
         <div className="results">
           <h3>{t('results')}</h3>
         
         </div>
-      )}
+      )} */}
     </div>
   );
 };
