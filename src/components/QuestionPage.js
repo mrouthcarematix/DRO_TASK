@@ -67,12 +67,7 @@ const QuestionPage = () => {
 
   const handleNext = () => {
     
-    console.log(userAnswer,'------length11111-----');
-    console.log(typeof(userAnswer),'------length33-----');
     if (question.answerType == 'RICH_TEXT') {
-      console.log(userAnswer,'------length11111ttt-----');
-      console.log(typeof(userAnswer),'------length33tt-----');
-      console.log(userAnswer.richText,'------length55tt-----');
       if (!userAnswer.richText || userAnswer.richText.trim() === '') {
         setErrorMessage('This question is required.');
         return;
@@ -122,11 +117,16 @@ const QuestionPage = () => {
       },
       userAnswerLogs: Object.entries(answers).map(([pageIndex, answer]) => {
         const question = survey.pages[pageIndex].sections[0].questions[0];
+        const answerFreeText = answer.systolic && answer.diastolic 
+          ? `${answer.systolic}/${answer.diastolic}`
+          : Array.isArray(answer.question) 
+          ? answer.question.join(',')
+          : answer.slider || answer.rating || answer.richText || answer.dropdown || answer.date || answer.time || '';
         return {
-          choiceId: 0,
+          choiceId: (Number(answer.question)) || 0,
           questionId: question.id,
           id: 0,
-          answerFreeText: Array.isArray(answer.question) ? answer.question.join(',') : '',
+          answerFreeText,
           fileId: 0,
           score: question.score || 0
         };
@@ -170,18 +170,46 @@ const QuestionPage = () => {
   };
 
   const handleAnswerChange = (event) => {
-    const { name, value, checked } = event.target;
+    const { name, value, checked } = event.target || {};
+  
     if (question.answerType === 'CHECK_BOX') {
       const updatedAnswers = checked
         ? [...(Array.isArray(userAnswer.question) ? userAnswer.question : []), value]
         : userAnswer.question.filter((answer) => answer !== value);
-      setUserAnswer({ question: updatedAnswers });
-      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { question: updatedAnswers } }));
+  
+      // Update state and dispatch the answer for CHECK_BOX type
+      setUserAnswer((prevAnswer) => ({
+        ...prevAnswer,
+        question: updatedAnswers,
+      }));
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, question: updatedAnswers } }));
+  
+    } else if (question.answerType === 'BP') {
+      // Update state and dispatch the answer for BP type
+      setUserAnswer((prevAnswer) => ({
+        ...prevAnswer,
+        [name]: value,
+      }));
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } }));
+  
+    } else if (question.answerType === 'SLIDER_WITH_SCALE') {
+      // Update state and dispatch the answer for SLIDER_WITH_SCALE type
+      setUserAnswer((prevAnswer) => ({
+        ...prevAnswer,
+        slider: value,
+      }));
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, slider: value } }));
+  
     } else {
-      setUserAnswer({ [name]: value });
-      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { [name]: value } }));
+      // General case for other question types
+      setUserAnswer((prevAnswer) => ({
+        ...prevAnswer,
+        [name]: value,
+      }));
+      dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } }));
     }
   };
+  
 
   const calculateProgress = () => {
     return ((currentPageIndex + 1) / survey.pages.length) * 100;
@@ -405,46 +433,62 @@ const QuestionPage = () => {
                   })}
                 </div>
               );
-  
-          case 'BP':
-            return (
-              <div>
-                <input
-                  type="text"
-                  placeholder=""
-                  name="systolic"
-                  onChange={handleAnswerChange}
-                  style={{
-                    width: '300px',
-                    height: '40px',
-                    padding: '10px',
-                    fontSize: '1rem',
-                    border: '1px solid #ccc',
-                    borderRadius: '5px'
-                  }}
-                  value={userAnswer.systolic || ''}
-                />
-              </div>
-            );
+              case 'BP':
+                return (
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Systolic"
+                      name="systolic"
+                      onChange={handleAnswerChange}
+                      style={{
+                        width: '300px',
+                        height: '40px',
+                        padding: '10px',
+                        fontSize: '1rem',
+                        border: '1px solid #ccc',
+                        borderRadius: '5px',
+                        marginRight: '10px'
+                      }}
+                      value={userAnswer.systolic || ''}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Diastolic"
+                      name="diastolic"
+                      onChange={handleAnswerChange}
+                      style={{
+                        width: '300px',
+                        height: '40px',
+                        padding: '10px',
+                        fontSize: '1rem',
+                        border: '1px solid #ccc',
+                        borderRadius: '5px'
+                      }}
+                      value={userAnswer.diastolic || ''}
+                    />
+                  </div>
+                );    
           case 'SLIDER_WITH_SCALE':
-            return (
-              <div>
-                <Slider
-                  min={0}
-                  max={10}
-                  step={1}
-                  value={userAnswer.slider || 0}
-                  onChange={(value) => handleAnswerChange({ target: { name: 'slider', value } })}
-                />
-                <div className="slider-scale">
-                  {[...Array(11)].map((_, i) => (
-                    <span key={i} className="slider-scale-item">
-                      {i}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            );
+                  return (
+                    <div>
+                      <Slider
+                        min={0}
+                        max={10}
+                        step={1}
+                        value={userAnswer.slider || 0}
+                        onChange={(value) => handleAnswerChange({ target: { name: 'slider', value } })}
+                      />
+                      <div className="slider-scale">
+                        {[...Array(11)].map((_, i) => (
+                          <span key={i} className="slider-scale-item">
+                            {i}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+          );
+                
           case 'DROP_DOWN':
             return (
               <div>
