@@ -102,27 +102,6 @@ const QuestionPage = () => {
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setDragOver(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      setUserAnswer((prev) => ({
-        ...prev,
-        video: files[0],
-      }));
-    }
-  };
-
   const calculateProgress = () => {
     return ((currentPageIndex + 1) / survey.pages.length) * 100;
   };
@@ -146,6 +125,20 @@ const QuestionPage = () => {
     if (file) {
       const videoURL = URL.createObjectURL(file);
       setVideoSrc(videoURL);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleAnswerChange({ target: { name: 'image', value: file } });
+    }
+  };
+
+  const handleAudioUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleAnswerChange({ target: { name: 'audio', value: file } });
     }
   };
 
@@ -203,7 +196,6 @@ const QuestionPage = () => {
               <source src={question.url} type="audio/mp3" />
               Your browser does not support the audio element.
             </audio>
-            {question.helpText && <p className="help-text">{question.helpText}</p>}
             {question.choices.map((choice) => (
               <div key={choice.id}>
                 <input
@@ -224,7 +216,6 @@ const QuestionPage = () => {
           case 'RADIO_BUTTON':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 {question.choices.map((choice) => (
                   <div key={choice.id}>
                     <input
@@ -243,7 +234,6 @@ const QuestionPage = () => {
           case 'RATING':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <StarRatings
                   rating={userAnswer.rating || 0}
                   starRatedColor="blue"
@@ -255,36 +245,46 @@ const QuestionPage = () => {
                 />
               </div>
             );
-          case 'IMAGE_UPLOAD':
-            return (
-              <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  onChange={(e) => handleAnswerChange({ target: { name: 'image', value: e.target.files[0] } })}
-                />
-              </div>
-            );
+            case 'IMAGE_UPLOAD':
+              return (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    onChange={(e) => handleImageUpload(e)}
+                  />
+                  {userAnswer.image && (
+                    <div className="image-preview">
+                      <img src={URL.createObjectURL(userAnswer.image)} alt="Uploaded" />
+                    </div>
+                  )}
+                </div>
+              );
+            
           case 'VIDEO_UPLOAD':
             return renderVideoUploadSection();
           case 'AUDIO_UPLOAD':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <input
                   type="file"
                   accept="audio/*"
                   name="audio"
-                  onChange={(e) => handleAnswerChange({ target: { name: 'audio', value: e.target.files[0] } })}
+                  onChange={(e) =>handleAudioUpload(e)}
                 />
+                {userAnswer.audio && (
+                  <div>
+                    <audio controls>
+                      <source src={URL.createObjectURL(userAnswer.audio)} type="audio/*" />
+                    </audio>
+                  </div>
+                )}
               </div>
             );
           case 'RICH_TEXT':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <textarea
                   rows="10"
                   cols="150"
@@ -298,7 +298,6 @@ const QuestionPage = () => {
             case 'CHECK_BOX':
               return (
                 <div>
-                  {question.helpText && <p className="help-text">{question.helpText}</p>}
                   {question.choices.map((choice) => {
                     const choiceIdString = String(choice.id); 
                     return (
@@ -321,7 +320,6 @@ const QuestionPage = () => {
           case 'BP':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <input
                   type="text"
                   placeholder=""
@@ -342,7 +340,6 @@ const QuestionPage = () => {
           case 'SLIDER_WITH_SCALE':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <Slider
                   min={0}
                   max={10}
@@ -362,7 +359,6 @@ const QuestionPage = () => {
           case 'DROP_DOWN':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <select name="dropdown" onChange={handleAnswerChange} value={userAnswer.dropdown || ''}>
                   {question.choices.map((choice) => (
                     <option key={choice.id} value={choice.id}>
@@ -375,14 +371,12 @@ const QuestionPage = () => {
           case 'DATE':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <input type="date" name="date" onChange={handleAnswerChange} value={userAnswer.date || ''} />
               </div>
             );
           case 'TIME':
             return (
               <div>
-                {question.helpText && <p className="help-text">{question.helpText}</p>}
                 <input type="time" name="time" onChange={handleAnswerChange} value={userAnswer.time || ''} />
               </div>
             );

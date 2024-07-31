@@ -210,3 +210,11 @@
   color: #555;
   margin-bottom: 10px;
 }
+.image-preview {
+  margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 10%;
+  height: auto;
+}
