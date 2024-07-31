@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchSurvey } from './surveyThunk';
+import { fetchSurvey, saveSurveyResponse } from './surveyThunk';
 
 const surveySlice = createSlice({
   name: 'survey',
@@ -9,6 +9,7 @@ const surveySlice = createSlice({
     error: null,
     currentPage: 0,
     answers: {}, 
+    submissionStatus: null,
   },
   reducers: {
     nextPage: (state) => {
@@ -41,6 +42,16 @@ const surveySlice = createSlice({
       .addCase(fetchSurvey.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(saveSurveyResponse.pending, (state) => {
+        state.submissionStatus = 'pending';
+      })
+      .addCase(saveSurveyResponse.fulfilled, (state) => {
+        state.submissionStatus = 'fulfilled';
+      })
+      .addCase(saveSurveyResponse.rejected, (state, action) => {
+        state.submissionStatus = 'rejected';
+        state.error = action.payload;
       });
   },
 });

@@ -9,28 +9,29 @@ import StarRatings from 'react-star-ratings';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faInfoCircle,faUpload} from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import customVideoUploadIcon from '../assets/image/camera.png';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { saveSurveyResponse } from '../features/survey/surveyThunk';
 
 const QuestionPage = () => {
   const { t } = useTranslation();
   const { pageIndex } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { survey, currentPage, answers } = useSelector((state) => state.survey);
+  const { survey, answers } = useSelector((state) => state.survey);
   const currentPageIndex = parseInt(pageIndex, 10);
-  //const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || {});
   const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || { question: [] });
   const [showResults, setShowResults] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [dragOver, setDragOver] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showHelpText, setShowHelpText] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [timeSpent, setTimeSpent] = useState(0);
 
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
@@ -65,9 +66,28 @@ const QuestionPage = () => {
   };
 
   const handleNext = () => {
+    
+    console.log(userAnswer,'------length11111-----');
+    console.log(typeof(userAnswer),'------length33-----');
+    if (question.answerType == 'RICH_TEXT') {
+      console.log(userAnswer,'------length11111ttt-----');
+      console.log(typeof(userAnswer),'------length33tt-----');
+      console.log(userAnswer.richText,'------length55tt-----');
+      if (!userAnswer.richText || userAnswer.richText.trim() === '') {
+        setErrorMessage('This question is required.');
+        return;
+      }
+    }
     if (question.required && Object.keys(userAnswer).length === 0) {
       setErrorMessage('This question is required.');
       return;
+    }
+    const data = userAnswer;
+    if (Array.isArray(data.question) && data.question.length === 0) {
+      setErrorMessage('This question is required.');
+      return;
+      
+    
     } else {
       setErrorMessage('');
     }
@@ -79,8 +99,67 @@ const QuestionPage = () => {
     }
   };
 
+  const transformAnswersToRequiredFormat = () => {
+    const endTime = Date.now();
+    const totalTimeSpent = Math.floor((endTime - startTime) / 1000);
+    const progressStatus = currentPageIndex === survey.pages.length - 1 ? 'COMPLETED' : 'STARTED';
+    const transformedAnswers = {
+      programUserID: 1145,
+      id: 0,
+      programSurveyId: 1075,
+      pageNavigations: survey.pages.map((page, index) => ({
+        previousPageId: index === 0 ? 0 : survey.pages[index - 1].id,
+        currentPageId: page.id,
+        nextPageId: index === survey.pages.length - 1 ? 0 : survey.pages[index + 1].id,
+      })),
+      scheduledSession: {
+        userScheduleAssignId: 0,
+        scheduledDate: 0,
+        startTime: Date.now(),
+        endTime: Date.now() + 7200000,
+        scheduleType: "UNSCHEDULED",
+        id: 0
+      },
+      userAnswerLogs: Object.entries(answers).map(([pageIndex, answer]) => {
+        const question = survey.pages[pageIndex].sections[0].questions[0];
+        return {
+          choiceId: 0,
+          questionId: question.id,
+          id: 0,
+          answerFreeText: Array.isArray(answer.question) ? answer.question.join(',') : '',
+          fileId: 0,
+          score: question.score || 0
+        };
+      }),
+      userSurveySessionDetail: {
+        endTime: 0,
+        lastSubmissionTime: endTime,
+        timeSpent: totalTimeSpent,
+        declined: false,
+        progressStatus: progressStatus,
+        lastAnswerPageId: survey.pages[survey.pages.length - 1].id,
+        startTime: Date.now(),
+        percentageComplete: ((currentPageIndex + 1) / survey.pages.length) * 100,
+        id: 0
+      },
+      unscheduled: true
+    };
+    return transformedAnswers;
+  };
+  
+  
+
+  // const handleSave = () => {
+  //   const transformedData = transformAnswersToRequiredFormat();
+  //   console.log(transformedData,'----transformedData-----'); 
+  //   // dispatch(saveSurvey(transformedData));
+  //   setShowResults(true);
+  // };
+
   const handleSave = () => {
-    dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
+    const transformedData = transformAnswersToRequiredFormat();
+    console.log(transformedData,'----transformedData-----'); 
+    dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
   };
 
@@ -468,11 +547,11 @@ const QuestionPage = () => {
           <p className="question-text">
             {question.text}
             {question.helpText && (
-                <>
-                  <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
-                  {showHelpText && <span className="help-text">{question.helpText}</span>}
-                </>
-              )}
+              <>
+                <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
+                {showHelpText && <span className="help-text">{question.helpText}</span>}
+              </>
+            )}
           </p>
           <div className="question-content">
             {renderQuestionContent()}
@@ -482,7 +561,7 @@ const QuestionPage = () => {
       {showResults && (
         <div className="results">
           <h3>{t('results')}</h3>
-          <pre>{JSON.stringify(answers, null, 2)}</pre>
+        
         </div>
       )}
     </div>

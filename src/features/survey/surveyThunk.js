@@ -66,3 +66,27 @@ export const fetchSurvey = createAsyncThunk(
 );
 
 
+export const saveSurveyResponse = createAsyncThunk(
+  'survey/saveSurveyResponse',
+  async (surveyData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        'https://octopus.carematix.com/peapp/user/survey/updateSurveyResponse',
+        surveyData,
+        {
+          headers: {
+            'X-DRO-TOKEN': '3g1873e8fh377a1',
+            'X-DRO-SOURCE': 'IOS',
+            'Content-Type': 'application/json',
+            'X-DRO-TIMEZONE': 'Asia/Kolkata',
+            'X-DRO-LANGUAGE': 'EN',
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
