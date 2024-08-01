@@ -150,7 +150,7 @@ const QuestionPage = () => {
   const handleSave = () => {
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData-----'); 
-    dispatch(saveSurveyResponse(transformedData));
+    //dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate(`/different-page`);
   };
@@ -219,7 +219,7 @@ const QuestionPage = () => {
     setIsModalOpen(false);
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData not full-----'); 
-    dispatch(saveSurveyResponse(transformedData));
+    //dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate('/');
   };

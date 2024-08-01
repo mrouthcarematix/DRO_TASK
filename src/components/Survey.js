@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { fetchDashboardData } from '../features/survey/dashboardThunk';
-import { fetchSurvey } from '../features/survey/surveyThunk';
+//import { fetchDashboardData } from '../features/survey/dashboardThunk';
+import { fetchSurvey,fetchDashboardData } from '../features/survey/surveyThunk';
 import './Survey.css';
 import doctorCheckupImage from '../assets/image/doctor-checkup.jpg';
 
