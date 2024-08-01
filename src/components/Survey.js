@@ -32,14 +32,17 @@ const Survey = () => {
   }, [dispatch,selectedLanguage]);
 
   useEffect(() => {
-    if (survey && survey.language) {
-      const languageCode = survey.language.toLowerCase();
-      if (['en', 'hn', 'es'].includes(languageCode)) {
-        i18n.changeLanguage(languageCode);
-      } else {
-        console.warn(`Unsupported language code: ${languageCode}`);
-      }
-    }
+    // if (survey && survey.language) {
+    //   const languageCode = survey.language.toLowerCase();
+    //   if (['en', 'hn', 'es','ru'].includes(languageCode)) {
+    //     i18n.changeLanguage(languageCode);
+    //   } else {
+    //     console.warn(`Unsupported language code: ${languageCode}`);
+    //   }
+    // }
+    const languageCode = selectedLanguage.toLowerCase();
+    i18n.changeLanguage(languageCode);
+
   }, [survey, i18n]);
 
   useEffect(() => {
