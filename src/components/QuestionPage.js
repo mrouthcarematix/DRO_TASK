@@ -132,13 +132,13 @@ const QuestionPage = () => {
         };
       }),
       userSurveySessionDetail: {
-        endTime: 0,
+        endTime: endTime,
         lastSubmissionTime: endTime,
         timeSpent: totalTimeSpent,
         declined: false,
         progressStatus: progressStatus,
-        lastAnswerPageId: survey.pages[survey.pages.length-1].id,
-        startTime: Date.now(),
+        lastAnswerPageId: survey.pages[pageIndex].id,
+        startTime: startTime,
         percentageComplete: ((currentPageIndex + 1) / survey.pages.length) * 100,
         id: 0
       },

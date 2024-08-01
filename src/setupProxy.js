@@ -2,12 +2,23 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    '/api',
+    '/api/survey',
     createProxyMiddleware({
       target: 'https://octopus.carematix.com',
       changeOrigin: true,
       pathRewrite: {
-        '^/api': '/peapp/user/survey', 
+        '^/api/survey': '/peapp/user/survey',
+      },
+    })
+  );
+
+  app.use(
+    '/api/dashboard',
+    createProxyMiddleware({
+      target: 'https://octopus.carematix.com',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api/dashboard': '/peapp/user',
       },
     })
   );

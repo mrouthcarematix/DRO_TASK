@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchSurvey, saveSurveyResponse } from './surveyThunk';
+import { fetchDashboardData } from './dashboardThunk';
 
 const surveySlice = createSlice({
   name: 'survey',
@@ -8,8 +9,9 @@ const surveySlice = createSlice({
     loading: false,
     error: null,
     currentPage: 0,
-    answers: {}, 
+    answers: {},
     submissionStatus: null,
+    userSurveySessionId: null,
   },
   reducers: {
     nextPage: (state) => {
@@ -27,11 +29,24 @@ const surveySlice = createSlice({
     },
     setAnswer: (state, action) => {
       const { pageIndex, answer } = action.payload;
-      state.answers[pageIndex] = answer; 
-    }
+      state.answers[pageIndex] = answer;
+    },
+    setUserSurveySessionId: (state, action) => {
+      state.userSurveySessionId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchDashboardData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchDashboardData.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchDashboardData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
       .addCase(fetchSurvey.pending, (state) => {
         state.loading = true;
       })
@@ -56,5 +71,5 @@ const surveySlice = createSlice({
   },
 });
 
-export const { nextPage, prevPage, setCurrentPage, setAnswer } = surveySlice.actions;
+export const { nextPage, prevPage, setCurrentPage, setAnswer, setUserSurveySessionId } = surveySlice.actions;
 export default surveySlice.reducer;

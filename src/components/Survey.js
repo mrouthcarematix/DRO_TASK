@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { fetchDashboardData } from '../features/survey/dashboardThunk';
 import { fetchSurvey } from '../features/survey/surveyThunk';
 import './Survey.css';
 import doctorCheckupImage from '../assets/image/doctor-checkup.jpg';
@@ -10,10 +11,18 @@ const Survey = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { survey, loading, error, currentPage } = useSelector((state) => state.survey);
+  const { survey, loading, error, currentPage, userSurveySessionId } = useSelector((state) => state.survey);
 
   useEffect(() => {
-    dispatch(fetchSurvey());
+    const loadData = async () => {
+      const resultAction = await dispatch(fetchDashboardData());
+      if (fetchDashboardData.fulfilled.match(resultAction)) {
+        const userSurveySessionId = resultAction.payload;
+        dispatch(fetchSurvey(userSurveySessionId));
+      }
+    };
+
+    loadData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -29,14 +38,16 @@ const Survey = () => {
 
   useEffect(() => {
     if (survey) {
+      let count=0;
       const userSurveySessionDetail = survey.userSurveySession?.userSurveySessionDetail;
-
       if (userSurveySessionDetail) {
-        const { progressStatus, lastAnswerPageId } = userSurveySessionDetail;
+        const { progressStatus} = userSurveySessionDetail;
+        if(survey.userSurveySession.userAnswerLogs.length>0) count = survey.userSurveySession.userAnswerLogs.length;
         if (progressStatus === 'NOT_STARTED') {
           navigate('/start');
         } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {
-          navigate(`/question/${lastAnswerPageId}`);
+          //navigate('/start');
+          navigate(`/question/${count}`);
         } else if (progressStatus === 'COMPLETED') {
           navigate('/thankyou');
         }

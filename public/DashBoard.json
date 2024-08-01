@@ -24,8 +24,8 @@
         "firstLogin": false
     },
     "userSurveySummary": {
-        "fromDate": 1722277589000,
-        "toDate": 1722279389173,
+        "fromDate": 1722506340000,
+        "toDate": 1722508140325,
         "assigned": 0,
         "completed": 0,
         "active": 0,
@@ -44,7 +44,7 @@
             "isAutoSave": true,
             "surveySessionInfo": {
                 "scheduleSessionId": 0,
-                "userSurveySessionId": 2645,
+                "userSurveySessionId": 2685,
                 "scheduleDate": 0,
                 "startTime": 0,
                 "endTime": 0,
