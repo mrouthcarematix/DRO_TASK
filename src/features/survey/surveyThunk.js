@@ -6,7 +6,7 @@ import { setUserSurveySessionId } from './surveySlice';
 
 export const fetchSurvey = createAsyncThunk(
   'survey/fetchSurvey',
-  async (userSurveySessionId, thunkAPI) => {
+  async (userSurveySessionId,thunkAPI) => {
     try {
       console.log(userSurveySessionId,'------userSurveySessionId----');
       const response = await axios.post(
@@ -61,14 +61,16 @@ export const fetchSurvey = createAsyncThunk(
 
 export const fetchDashboardData = createAsyncThunk(
   'survey/fetchDashboardData',
-  async (_, thunkAPI) => {
+
+  async ( language , thunkAPI) => {
     try {
+      console.log(language,'--language fetchDashboardData---------');
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}peapp/user/dashboardData`,
         {
           programUserId: 1145,
           timezone: process.env.REACT_APP_TIMEZONE,
-          language: process.env.REACT_APP_LANGUAGE
+          language: language?.language|| process.env.REACT_APP_LANGUAGE
         },
         {
           headers: {
@@ -76,18 +78,20 @@ export const fetchDashboardData = createAsyncThunk(
             'X-DRO-SOURCE': process.env.REACT_APP_SOURCE,
             'Content-Type': 'application/json',
             'X-DRO-TIMEZONE': process.env.REACT_APP_TIMEZONE,
-            'X-DRO-LANGUAGE': process.env.REACT_APP_LANGUAGE,
+            'X-DRO-LANGUAGE': language?.language|| process.env.REACT_APP_LANGUAGE,
           },
         }
       );
       //const response = await axios.get('/DashBoard.json');
       console.log(response.data,'-------DashBoard Api Value-------');
       const { userSurveySessions } = response.data;
+      let dataVal = response.data;
       if (userSurveySessions && userSurveySessions.length > 0) {
         const userSurveySessionId = userSurveySessions[0].surveySessionInfo.userSurveySessionId
         ;
         thunkAPI.dispatch(setUserSurveySessionId(userSurveySessionId));
-        return userSurveySessionId;
+        //return userSurveySessionId;
+        return [userSurveySessionId, dataVal];
       } else {
         throw new Error('No user survey sessions found');
       }

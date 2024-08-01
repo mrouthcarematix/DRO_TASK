@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { fetchSurvey,fetchDashboardData } from '../features/survey/surveyThunk';
 import './Survey.css';
@@ -10,19 +10,26 @@ const Survey = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { survey, loading, error, currentPage, userSurveySessionId } = useSelector((state) => state.survey);
+  const [dataVal, setDataVal] = useState(null);
+  const [surveyName, setSurveyName] = useState('');
+  const selectedLanguage = location.state?.selectedLanguage || 'EN';
 
   useEffect(() => {
     const loadData = async () => {
-      const resultAction = await dispatch(fetchDashboardData());
+      const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
-        const userSurveySessionId = resultAction.payload;
+        const [userSurveySessionId, dataVal] = resultAction.payload;
+        console.log('Full dataVal from thunk:', dataVal);
+        setDataVal(dataVal);
+        setSurveyName(dataVal.userSurveySessions[0].surveyName);
         dispatch(fetchSurvey(userSurveySessionId));
       }
     };
 
     loadData();
-  }, [dispatch]);
+  }, [dispatch,selectedLanguage]);
 
   useEffect(() => {
     if (survey && survey.language) {
@@ -72,7 +79,7 @@ const Survey = () => {
     <div className="container survey-container">
       <div className="survey-header">
         <div>
-          <h1 className="survey-title">{survey?.name}</h1>
+          <h1 className="survey-title">{surveyName}</h1>
           <p className="survey-subtitle">{survey?.programInfo?.organizationName} : {survey?.programInfo?.programName}</p>
         </div>
         <p className="estimated-time">{t('estimatedTimeToComplete')} :</p> <p className="estimated-time-value">{'10 mins'}</p>
