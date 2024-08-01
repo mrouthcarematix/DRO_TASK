@@ -21,7 +21,6 @@ const Survey = () => {
       const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
         const [userSurveySessionId, dataVal] = resultAction.payload;
-        console.log('Full dataVal from thunk:', dataVal);
         setDataVal(dataVal);
         setSurveyName(dataVal.userSurveySessions[0].surveyName);
         dispatch(fetchSurvey(userSurveySessionId));

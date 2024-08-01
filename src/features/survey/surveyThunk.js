@@ -8,7 +8,6 @@ export const fetchSurvey = createAsyncThunk(
   'survey/fetchSurvey',
   async (userSurveySessionId,thunkAPI) => {
     try {
-      console.log(userSurveySessionId,'------userSurveySessionId----');
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}peapp/user/survey/getSurvey`,
         {
@@ -34,7 +33,7 @@ export const fetchSurvey = createAsyncThunk(
         const userSurveySessionDetail = userSurveySession.userSurveySessionDetail;
         if (userSurveySessionDetail) {
           if(userSurveySession.userAnswerLogs.length>0) count = userSurveySession.userAnswerLogs.length-1;
-          console.log(count,'----Page count value---');
+          console.log(count,'----PageCountValue---');
           const { progressStatus } = userSurveySessionDetail;
           if (progressStatus === 'NOT_STARTED') {
             thunkAPI.dispatch(setCurrentPage(0));
@@ -59,12 +58,42 @@ export const fetchSurvey = createAsyncThunk(
   }
 );
 
+export const fetchSurveySession = createAsyncThunk(
+  'survey/fetchSurveySession',
+  async (userSurveySessionId,thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}peapp/user/survey/getSurvey`,
+        {
+          programUserId: 1145,
+          userSurveySessionId: userSurveySessionId,
+          timezone: process.env.REACT_APP_TIMEZONE,
+          language: process.env.REACT_APP_LANGUAGE
+        },
+        {
+          headers: {
+            'X-DRO-TOKEN': process.env.REACT_APP_TOKEN,
+            'X-DRO-SOURCE': process.env.REACT_APP_SOURCE,
+            'Content-Type': 'application/json',
+            'X-DRO-TIMEZONE': process.env.REACT_APP_TIMEZONE,
+            'X-DRO-LANGUAGE': process.env.REACT_APP_LANGUAGE,
+          },
+        }
+      );
+      const userSurveySession  = response.data.userSurveySession;
+      return userSurveySession;
+    } catch (error) {
+      console.error('Error fetching survey:', error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchDashboardData = createAsyncThunk(
   'survey/fetchDashboardData',
 
   async ( language , thunkAPI) => {
     try {
-      console.log(language,'--language fetchDashboardData---------');
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}peapp/user/dashboardData`,
         {
@@ -83,7 +112,6 @@ export const fetchDashboardData = createAsyncThunk(
         }
       );
       //const response = await axios.get('/DashBoard.json');
-      console.log(response.data,'-------DashBoard Api Value-------');
       const { userSurveySessions } = response.data;
       let dataVal = response.data;
       if (userSurveySessions && userSurveySessions.length > 0) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate,useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { nextPage, prevPage, setCurrentPage, setAnswer } from '../features/survey/surveySlice';
 import i18n from '../i18n';
@@ -15,13 +15,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import customVideoUploadIcon from '../assets/image/camera.png';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { saveSurveyResponse } from '../features/survey/surveyThunk';
+import { saveSurveyResponse,fetchDashboardData,fetchSurveySession } from '../features/survey/surveyThunk';
 
 const QuestionPage = () => {
   const { t } = useTranslation();
   const { pageIndex } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { survey, answers } = useSelector((state) => state.survey);
   const currentPageIndex = parseInt(pageIndex, 10);
   const [userAnswer, setUserAnswer] = useState(answers[currentPageIndex] || { question: [] });
@@ -32,7 +33,30 @@ const QuestionPage = () => {
   const [videoSrc, setVideoSrc] = useState(null);
   const [startTime, setStartTime] = useState(Date.now());
   const [timeSpent, setTimeSpent] = useState(0);
+  const selectedLanguage = location.state?.selectedLanguage || 'EN';
+  const [userSurveySessionDetail, setUserSurveySessionDetail] = useState(null);
 
+  useEffect(() => {
+    const loadData = async () => {
+      const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
+      if (fetchDashboardData.fulfilled.match(resultAction)) {
+        const [userSurveySessionId, dataVal] = resultAction.payload;
+        dispatch(fetchSurveySession(userSurveySessionId))
+        .unwrap()
+        .then((result) => {
+          console.log(result, '------result----');
+          console.log(result.userAnswerLogs, '------userSurveySession result----');
+          setUserSurveySessionDetail(result.userAnswerLogs);
+        })
+        .catch((error) => {
+          console.error('Error fetching survey:', error);
+        });
+      }
+    };
+    loadData();
+  
+  }, [dispatch]);
+  
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
   }, [currentPageIndex, dispatch]);

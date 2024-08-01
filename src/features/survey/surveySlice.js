@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchSurvey, saveSurveyResponse,fetchDashboardData } from './surveyThunk';
+import { fetchSurvey, saveSurveyResponse,fetchDashboardData,fetchSurveySession } from './surveyThunk';
 
 const surveySlice = createSlice({
   name: 'survey',
   initialState: {
     survey: null,
+    userSurveySession:null,
     loading: false,
     error: null,
     currentPage: 0,
@@ -43,6 +44,17 @@ const surveySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchDashboardData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchSurveySession.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchSurveySession.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userSurveySession = action.payload;
+      })
+      .addCase(fetchSurveySession.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
