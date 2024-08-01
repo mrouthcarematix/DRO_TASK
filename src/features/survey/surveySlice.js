@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchSurvey, saveSurveyResponse,fetchDashboardData } from './surveyThunk';
-//import { fetchDashboardData } from './dashboardThunk';
 
 const surveySlice = createSlice({
   name: 'survey',

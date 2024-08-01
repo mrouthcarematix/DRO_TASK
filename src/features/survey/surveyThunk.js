@@ -10,7 +10,7 @@ export const fetchSurvey = createAsyncThunk(
     try {
       console.log(userSurveySessionId,'------userSurveySessionId----');
       const response = await axios.post(
-        'https://octopus.carematix.com/peapp/user/survey/getSurvey',
+        `${process.env.REACT_APP_API_BASE_URL}peapp/user/survey/getSurvey`,
         {
           programUserId: 1145,
           userSurveySessionId: userSurveySessionId,
@@ -19,11 +19,11 @@ export const fetchSurvey = createAsyncThunk(
         },
         {
           headers: {
-            'X-DRO-TOKEN': '3g1873e8fh377a1',
-            'X-DRO-SOURCE': 'IOS',
+            'X-DRO-TOKEN': process.env.REACT_APP_TOKEN,
+            'X-DRO-SOURCE': process.env.REACT_APP_SOURCE,
             'Content-Type': 'application/json',
-            'X-DRO-TIMEZONE': 'Asia/Kolkata',
-            'X-DRO-LANGUAGE': 'EN',
+            'X-DRO-TIMEZONE': process.env.REACT_APP_TIMEZONE,
+            'X-DRO-LANGUAGE': process.env.REACT_APP_LANGUAGE,
           },
         }
       );
@@ -64,7 +64,7 @@ export const fetchDashboardData = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.post(
-        'https://octopus.carematix.com/peapp/user/dashboardData',
+        `${process.env.REACT_APP_API_BASE_URL}peapp/user/dashboardData`,
         {
           programUserId: 1145,
           timezone: process.env.REACT_APP_TIMEZONE,
@@ -72,11 +72,11 @@ export const fetchDashboardData = createAsyncThunk(
         },
         {
           headers: {
-            'X-DRO-TOKEN': '3g1873e8fh377a1',
-            'X-DRO-SOURCE': 'IOS',
+            'X-DRO-TOKEN': process.env.REACT_APP_TOKEN,
+            'X-DRO-SOURCE': process.env.REACT_APP_SOURCE,
             'Content-Type': 'application/json',
-            'X-DRO-TIMEZONE': 'Asia/Kolkata',
-            'X-DRO-LANGUAGE': 'EN',
+            'X-DRO-TIMEZONE': process.env.REACT_APP_TIMEZONE,
+            'X-DRO-LANGUAGE': process.env.REACT_APP_LANGUAGE,
           },
         }
       );
@@ -103,15 +103,15 @@ export const saveSurveyResponse = createAsyncThunk(
   async (surveyData, thunkAPI) => {
     try {
       const response = await axios.post(
-        'https://octopus.carematix.com/peapp/user/survey/updateSurveyResponse',
+        `${process.env.REACT_APP_API_BASE_URL}peapp/user/survey/updateSurveyResponse`,
         surveyData,
         {
           headers: {
-            'X-DRO-TOKEN': '3g1873e8fh377a1',
-            'X-DRO-SOURCE': 'IOS',
+            'X-DRO-TOKEN': process.env.REACT_APP_TOKEN,
+            'X-DRO-SOURCE': process.env.REACT_APP_SOURCE,
             'Content-Type': 'application/json',
-            'X-DRO-TIMEZONE': 'Asia/Kolkata',
-            'X-DRO-LANGUAGE': 'EN',
+            'X-DRO-TIMEZONE': process.env.REACT_APP_TIMEZONE,
+            'X-DRO-LANGUAGE': process.env.REACT_APP_LANGUAGE,
           },
         }
       );
