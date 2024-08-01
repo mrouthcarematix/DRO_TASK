@@ -33,7 +33,7 @@ export const fetchSurvey = createAsyncThunk(
       if (userSurveySession) {
         const userSurveySessionDetail = userSurveySession.userSurveySessionDetail;
         if (userSurveySessionDetail) {
-          if(userSurveySession.userAnswerLogs.length>0) count = userSurveySession.userAnswerLogs.length;
+          if(userSurveySession.userAnswerLogs.length>0) count = userSurveySession.userAnswerLogs.length-1;
           console.log(count,'----Page count value---');
           const { progressStatus } = userSurveySessionDetail;
           if (progressStatus === 'NOT_STARTED') {

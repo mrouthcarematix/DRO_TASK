@@ -51,7 +51,7 @@ const Survey = () => {
       const userSurveySessionDetail = survey.userSurveySession?.userSurveySessionDetail;
       if (userSurveySessionDetail) {
         const { progressStatus} = userSurveySessionDetail;
-        if(survey.userSurveySession.userAnswerLogs.length>0) count = survey.userSurveySession.userAnswerLogs.length;
+        if(survey.userSurveySession.userAnswerLogs.length>0) count = survey.userSurveySession.userAnswerLogs.length-1;
         if (progressStatus === 'NOT_STARTED') {
           navigate('/start');
         } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {

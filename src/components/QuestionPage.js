@@ -150,7 +150,7 @@ const QuestionPage = () => {
   const handleSave = () => {
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData-----'); 
-    //dispatch(saveSurveyResponse(transformedData));
+    dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate(`/different-page`);
   };
@@ -168,8 +168,6 @@ const QuestionPage = () => {
       const updatedAnswers = checked
         ? [...(Array.isArray(userAnswer.question) ? userAnswer.question : []), value]
         : userAnswer.question.filter((answer) => answer !== value);
-  
-      // Update state and dispatch the answer for CHECK_BOX type
       setUserAnswer((prevAnswer) => ({
         ...prevAnswer,
         question: updatedAnswers,
@@ -177,7 +175,6 @@ const QuestionPage = () => {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, question: updatedAnswers } }));
   
     } else if (question.answerType === 'BP') {
-      // Update state and dispatch the answer for BP type
       setUserAnswer((prevAnswer) => ({
         ...prevAnswer,
         [name]: value,
@@ -185,7 +182,6 @@ const QuestionPage = () => {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } }));
   
     } else if (question.answerType === 'SLIDER_WITH_SCALE') {
-      // Update state and dispatch the answer for SLIDER_WITH_SCALE type
       setUserAnswer((prevAnswer) => ({
         ...prevAnswer,
         slider: value,
@@ -193,7 +189,6 @@ const QuestionPage = () => {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, slider: value } }));
   
     } else {
-      // General case for other question types
       setUserAnswer((prevAnswer) => ({
         ...prevAnswer,
         [name]: value,
@@ -202,7 +197,6 @@ const QuestionPage = () => {
     }
   };
   
-
   const calculateProgress = () => {
     return ((currentPageIndex + 1) / survey.pages.length) * 100;
   };
@@ -219,7 +213,7 @@ const QuestionPage = () => {
     setIsModalOpen(false);
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData not full-----'); 
-    //dispatch(saveSurveyResponse(transformedData));
+    dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate('/');
   };
