@@ -41,37 +41,32 @@ const QuestionPage = () => {
     const loadData = async () => {
       const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
-        setDashboardData(resultAction.payload);
+        setDashboardData(resultAction.payload); // Store the complete response data
         const [userSurveySessionId, dataVal] = resultAction.payload;
         dispatch(fetchSurveySession(userSurveySessionId))
           .unwrap()
           .then((result) => {
             setUserSurveySessionDetail(result);
             const mappedAnswers = {};
-            if (survey.pages) {
-              result.userAnswerLogs.forEach((log, index) => {
-                console.log(log, '------log-----------');
-                const question = survey.pages[index]?.sections[0]?.questions[0];
-                const answer = {
-                  question: log.choiceId ? String(log.choiceId) : '',
-                  richText: log.answerFreeText,
-                  systolic: log.answerFreeText.split('/')[0] || '',
-                  diastolic: log.answerFreeText.split('/')[1] || '',
-                  slider: log.answerFreeText,
-                  rating: log.answerFreeText,
-                  dropdown: log.answerFreeText,
-                  date: log.answerFreeText,
-                  time: log.answerFreeText,
-                  checkBox: log.answerFreeText.split(',') || [],
-                };
-                mappedAnswers[index] = answer;
-              });
-              Object.entries(mappedAnswers).forEach(([pageIndex, answer]) => {
-                dispatch(setAnswer({ pageIndex: parseInt(pageIndex), answer }));
-              });
-            } else {
-              console.error('survey.pages is null');
-            }
+            result.userAnswerLogs.forEach((log, index) => {
+              console.log(log, '------log-----------');
+              const question = survey.pages[index].sections[0].questions[0];
+              const answer = {
+                question: log.choiceId ? String(log.choiceId) : '',
+                richText: log.answerFreeText,
+                systolic: log.answerFreeText.split('/')[0] || '',
+                diastolic: log.answerFreeText.split('/')[1] || '',
+                slider: log.answerFreeText,
+                rating: log.answerFreeText,
+                dropdown: log.answerFreeText,
+                date: log.answerFreeText,
+                time: log.answerFreeText,
+              };
+              mappedAnswers[index] = answer;
+            });
+            Object.entries(mappedAnswers).forEach(([pageIndex, answer]) => {
+              dispatch(setAnswer({ pageIndex: parseInt(pageIndex), answer }));
+            });
           })
           .catch((error) => {
             console.error('Error fetching survey:', error);
@@ -82,7 +77,7 @@ const QuestionPage = () => {
   }, [dispatch, selectedLanguage, survey.pages]);
   
   
-
+  
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
   }, [currentPageIndex, dispatch]);
@@ -211,7 +206,7 @@ const QuestionPage = () => {
   const handleSave = () => {
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData-----'); 
-    dispatch(saveSurveyResponse(transformedData));
+    //dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate(`/different-page`);
   };
@@ -274,7 +269,7 @@ const QuestionPage = () => {
     setIsModalOpen(false);
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData not full-----'); 
-    dispatch(saveSurveyResponse(transformedData));
+    //dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate('/');
   };

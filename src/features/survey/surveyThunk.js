@@ -29,18 +29,22 @@ export const fetchSurvey = createAsyncThunk(
 
       const { survey, userSurveySession } = response.data;
       let count=0;
+      let page =0;
       if (userSurveySession) {
         const userSurveySessionDetail = userSurveySession.userSurveySessionDetail;
         if (userSurveySessionDetail) {
-          if(userSurveySession.userAnswerLogs.length>0) count = userSurveySession.userAnswerLogs.length-1;
-          console.log(count,'----PageCountValue---');
+          if(userSurveySession.userAnswerLogs.length>0)
+            {
+              page = survey.pages[0].id;
+              count = (userSurveySessionDetail.lastAnswerPageId-page);
+            } 
           const { progressStatus } = userSurveySessionDetail;
           if (progressStatus === 'NOT_STARTED') {
             thunkAPI.dispatch(setCurrentPage(0));
           } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {
             thunkAPI.dispatch(setCurrentPage(count));
           } else if (progressStatus === 'COMPLETED') {
-            thunkAPI.dispatch(setCurrentPage(count));
+            thunkAPI.dispatch(setCurrentPage(0));
           }
         } else {
           console.warn('UserSurveySessionDetail is undefined, starting from page 0');

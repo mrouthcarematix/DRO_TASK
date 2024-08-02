@@ -47,14 +47,17 @@ const Survey = () => {
   useEffect(() => {
     if (survey) {
       let count=0;
+      let page =0;
       const userSurveySessionDetail = survey.userSurveySession?.userSurveySessionDetail;
       if (userSurveySessionDetail) {
         const { progressStatus} = userSurveySessionDetail;
-        if(survey.userSurveySession.userAnswerLogs.length>0) count = survey.userSurveySession.userAnswerLogs.length-1;
+        if(survey.userSurveySession.userAnswerLogs.length>0) {
+          page = survey.pages[0].id;
+          count = (survey.userSurveySession.userSurveySessionDetail.lastAnswerPageId-page);
+        }
         if (progressStatus === 'NOT_STARTED') {
           navigate('/start');
         } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {
-          //navigate('/start');
           navigate(`/question/${count}`);
         } else if (progressStatus === 'COMPLETED') {
           navigate('/thankyou');
