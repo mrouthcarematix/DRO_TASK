@@ -35,28 +35,54 @@ const QuestionPage = () => {
   const [timeSpent, setTimeSpent] = useState(0);
   const selectedLanguage = location.state?.selectedLanguage || 'EN';
   const [userSurveySessionDetail, setUserSurveySessionDetail] = useState(null);
+  const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
       const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
+        setDashboardData(resultAction.payload);
         const [userSurveySessionId, dataVal] = resultAction.payload;
         dispatch(fetchSurveySession(userSurveySessionId))
-        .unwrap()
-        .then((result) => {
-          console.log(result, '------result----');
-          console.log(result.userAnswerLogs, '------userSurveySession result----');
-          setUserSurveySessionDetail(result.userAnswerLogs);
-        })
-        .catch((error) => {
-          console.error('Error fetching survey:', error);
-        });
+          .unwrap()
+          .then((result) => {
+            setUserSurveySessionDetail(result);
+            const mappedAnswers = {};
+            if (survey.pages) {
+              result.userAnswerLogs.forEach((log, index) => {
+                console.log(log, '------log-----------');
+                const question = survey.pages[index]?.sections[0]?.questions[0];
+                const answer = {
+                  question: log.choiceId ? String(log.choiceId) : '',
+                  richText: log.answerFreeText,
+                  systolic: log.answerFreeText.split('/')[0] || '',
+                  diastolic: log.answerFreeText.split('/')[1] || '',
+                  slider: log.answerFreeText,
+                  rating: log.answerFreeText,
+                  dropdown: log.answerFreeText,
+                  date: log.answerFreeText,
+                  time: log.answerFreeText,
+                  checkBox: log.answerFreeText.split(',') || [],
+                };
+                mappedAnswers[index] = answer;
+              });
+              Object.entries(mappedAnswers).forEach(([pageIndex, answer]) => {
+                dispatch(setAnswer({ pageIndex: parseInt(pageIndex), answer }));
+              });
+            } else {
+              console.error('survey.pages is null');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching survey:', error);
+          });
       }
     };
     loadData();
+  }, [dispatch, selectedLanguage, survey.pages]);
   
-  }, [dispatch]);
   
+
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
   }, [currentPageIndex, dispatch]);
@@ -119,9 +145,20 @@ const QuestionPage = () => {
   };
 
   const transformAnswersToRequiredFormat = () => {
+    let previousSession;
+    let value = 0;
+    if (userSurveySessionDetail) {
+        previousSession=userSurveySessionDetail;
+        value = (100 - previousSession.userSurveySessionDetail.percentageComplete);
+      }
     const endTime = Date.now();
     const totalTimeSpent = Math.floor((endTime - startTime) / 1000);
     const progressStatus = currentPageIndex === survey.pages.length - 1 ? 'COMPLETED' : 'STARTED';
+    previousSession = userSurveySessionDetail;
+  
+    const finalTimeSpent = previousSession ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent : totalTimeSpent;
+    const finalPercentageComplete = previousSession ? previousSession.userSurveySessionDetail.percentageComplete + value: ((currentPageIndex + 1) / survey.pages.length) * 100;
+  
     const transformedAnswers = {
       programUserID: 1145,
       id: 0,
@@ -147,7 +184,7 @@ const QuestionPage = () => {
           ? answer.question.join(',')
           : answer.slider || answer.rating || answer.richText || answer.dropdown || answer.date || answer.time || '';
         return {
-          choiceId: (Number(answer.question)) || 0,
+          choiceId: Number(answer.question) || 0,
           questionId: question.id,
           id: 0,
           answerFreeText,
@@ -158,12 +195,12 @@ const QuestionPage = () => {
       userSurveySessionDetail: {
         endTime: endTime,
         lastSubmissionTime: endTime,
-        timeSpent: totalTimeSpent,
+        timeSpent: finalTimeSpent,
         declined: false,
         progressStatus: progressStatus,
-        lastAnswerPageId: survey.pages[pageIndex].id,
+        lastAnswerPageId: survey.pages[currentPageIndex].id,
         startTime: startTime,
-        percentageComplete: ((currentPageIndex + 1) / survey.pages.length) * 100,
+        percentageComplete: finalPercentageComplete,
         id: 0
       },
       unscheduled: true
