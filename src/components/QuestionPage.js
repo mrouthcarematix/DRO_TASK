@@ -48,57 +48,75 @@ const QuestionPage = () => {
           .unwrap()
           .then((result) => {
             setUserSurveySessionDetail(result);
-            const mappedAnswers = {};
-
-            result.userAnswerLogs.forEach((log, index) => {
-              let v1='',v2='',v3='',v4='',v5='',v6='',v7='',v8='',v9='';
-              if(log.questionId==2774||log.questionId==2775||log.questionId==2776|| log.questionId==2918){
-                v1 = log.choiceId ? String(log.choiceId) : '';
-              }if(log.questionId==2777){
-                v2 = isNaN(Number(log.answerFreeText)) ? log.answerFreeText : Number(log.answerFreeText);
-              }if(log.questionId==2781){
-                v3 = log.answerFreeText;
-              }if(log.questionId==2782){
-                v1 = log.answerFreeText.split(',') || [];
-              }if(log.questionId==2783){
-                v4 = log.answerFreeText.split('/')[0] || '';
-                v5 = log.answerFreeText.split('/')[1] || '';
-              }if(log.questionId==2784){
-                v6 = log.answerFreeText;
-                setselectedScaleValue(v6);
-              }if(log.questionId==2785){
-                v7 = log.answerFreeText;
-                setSelectedValue(v7);
-              }if(log.questionId==2786){
-                v8 = log.answerFreeText;
-              }if(log.questionId==2787){
-                v9 = log.answerFreeText;
-              }
-              const question = survey.pages[index].sections[0].questions[0];
-              const answer = {
-                question: v1,
-                richText: v3,
-                systolic: v4,
-                diastolic: v5,
-                slider: v6,
-                rating: v2,
-                dropdown: v7,
-                date: v8,
-                time: v9,
+            //const mappedAnswers = {};
+            result.userAnswerLogs.forEach((log) => {
+              let answer = {                
+                question: '',
+                richText: '',
+                systolic: '',
+                diastolic: '',
+                slider: '',
+                rating: '',
+                dropdown: '',
+                date: '',
+                time: ''
               };
-              mappedAnswers[index] = answer;
+              if (log.questionId == 2774) {
+                answer = { question: log.choiceId ? String(log.choiceId) : '' };
+                dispatch(setAnswer({ pageIndex: 0, answer }))
+              }else if (log.questionId == 2775) {
+                answer = { question: log.choiceId ? String(log.choiceId) : '' };
+                dispatch(setAnswer({ pageIndex: 1, answer }))
+              }else if (log.questionId == 2776) {
+                answer = { question: log.choiceId ? String(log.choiceId) : '' };
+                dispatch(setAnswer({ pageIndex: 2, answer }))
+              }else if (log.questionId == 2918) {
+                answer = { question: log.choiceId ? String(log.choiceId) : '' };
+                dispatch(setAnswer({ pageIndex: 11, answer }))
+              } 
+              else if (log.questionId == 2777) {
+                answer = { rating: isNaN(Number(log.answerFreeText)) ? log.answerFreeText : Number(log.answerFreeText) };
+                dispatch(setAnswer({ pageIndex: 3, answer }))
+              } else if (log.questionId == 2781) {
+                answer = { richText: log.answerFreeText };
+                dispatch(setAnswer({ pageIndex: 7, answer }))
+              } else if (log.questionId == 2782) {
+                answer = { question: log.answerFreeText.split(',') || [] };
+                dispatch(setAnswer({ pageIndex: 8, answer }))
+              } else if (log.questionId == 2783) {
+                const [systolic, diastolic] = log.answerFreeText.split('/');
+                answer = { systolic: systolic || '', diastolic: diastolic || '' };
+                dispatch(setAnswer({ pageIndex: 9, answer }))
+              } else if (log.questionId == 2784) {
+                answer = { slider: log.answerFreeText };
+                setselectedScaleValue(log.answerFreeText);
+                dispatch(setAnswer({ pageIndex: 10, answer }))
+              } else if (log.questionId == 2785) {
+                answer = { dropdown: log.answerFreeText };
+                setSelectedValue(log.answerFreeText);
+                dispatch(setAnswer({ pageIndex: 12, answer }))
+              } else if (log.questionId == 2786) {
+                answer = { date: log.answerFreeText };
+                dispatch(setAnswer({ pageIndex: 13, answer }))
+              } else if (log.questionId == 2787) {
+                answer = { time: log.answerFreeText };
+                dispatch(setAnswer({ pageIndex: 14, answer }))
+              }
+              //mappedAnswers[log.questionId] = answer;
             });
-            Object.entries(mappedAnswers).forEach(([pageIndex, answer]) => {
-              dispatch(setAnswer({ pageIndex: parseInt(pageIndex), answer }));
-            });
+  
+            // Object.entries(mappedAnswers).forEach(([questionId, answer]) => {
+            //   dispatch(setAnswer({ questionId: parseInt(questionId), answer }));
+            // });
           })
           .catch((error) => {
             console.error('Error fetching survey:', error);
           });
       }
     };
+    
     loadData();
-  }, [dispatch, selectedLanguage, survey.pages]);
+  }, [dispatch, selectedLanguage]);
 
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
@@ -318,7 +336,7 @@ const QuestionPage = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      handleAnswerChange({ target: { name: 'image', value: file } });
+      //handleAnswerChange({ target: { name: 'image', value: file } });
     }
   };
 
