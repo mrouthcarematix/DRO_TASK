@@ -35,32 +35,56 @@ const QuestionPage = () => {
   const [timeSpent, setTimeSpent] = useState(0);
   const selectedLanguage = location.state?.selectedLanguage || 'EN';
   const [userSurveySessionDetail, setUserSurveySessionDetail] = useState(null);
-  const [dashboardData, setDashboardData] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedScaleValue, setselectedScaleValue] = useState('');
+
 
   useEffect(() => {
     const loadData = async () => {
       const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
-        setDashboardData(resultAction.payload); // Store the complete response data
         const [userSurveySessionId, dataVal] = resultAction.payload;
         dispatch(fetchSurveySession(userSurveySessionId))
           .unwrap()
           .then((result) => {
             setUserSurveySessionDetail(result);
             const mappedAnswers = {};
+
             result.userAnswerLogs.forEach((log, index) => {
-              console.log(log, '------log-----------');
+              let v1='',v2='',v3='',v4='',v5='',v6='',v7='',v8='',v9='';
+              if(log.questionId==2774||log.questionId==2775||log.questionId==2776|| log.questionId==2918){
+                v1 = log.choiceId ? String(log.choiceId) : '';
+              }if(log.questionId==2777){
+                v2 = isNaN(Number(log.answerFreeText)) ? log.answerFreeText : Number(log.answerFreeText);
+              }if(log.questionId==2781){
+                v3 = log.answerFreeText;
+              }if(log.questionId==2782){
+                v1 = log.answerFreeText.split(',') || [];
+              }if(log.questionId==2783){
+                v4 = log.answerFreeText.split('/')[0] || '';
+                v5 = log.answerFreeText.split('/')[1] || '';
+              }if(log.questionId==2784){
+                v6 = log.answerFreeText;
+                setselectedScaleValue(v6);
+              }if(log.questionId==2785){
+                v7 = log.answerFreeText;
+                setSelectedValue(v7);
+              }if(log.questionId==2786){
+                v8 = log.answerFreeText;
+              }if(log.questionId==2787){
+                v9 = log.answerFreeText;
+              }
               const question = survey.pages[index].sections[0].questions[0];
               const answer = {
-                question: log.choiceId ? String(log.choiceId) : '',
-                richText: log.answerFreeText,
-                systolic: log.answerFreeText.split('/')[0] || '',
-                diastolic: log.answerFreeText.split('/')[1] || '',
-                slider: log.answerFreeText,
-                rating: log.answerFreeText,
-                dropdown: log.answerFreeText,
-                date: log.answerFreeText,
-                time: log.answerFreeText,
+                question: v1,
+                richText: v3,
+                systolic: v4,
+                diastolic: v5,
+                slider: v6,
+                rating: v2,
+                dropdown: v7,
+                date: v8,
+                time: v9,
               };
               mappedAnswers[index] = answer;
             });
@@ -75,9 +99,7 @@ const QuestionPage = () => {
     };
     loadData();
   }, [dispatch, selectedLanguage, survey.pages]);
-  
-  
-  
+
   useEffect(() => {
     dispatch(setCurrentPage(currentPageIndex));
   }, [currentPageIndex, dispatch]);
@@ -100,7 +122,13 @@ const QuestionPage = () => {
     return <div>Invalid survey structure</div>;
   }
 
-  const question = page.sections[0].questions[0];
+  //const question = page.sections[0].questions[0];
+  const question1 = page.sections[0].questions[0];
+  const question2 = page.sections[1]?.questions[0];
+  const question = {
+    ...question1,
+    ...question2,
+  };
   const handlePrevious = () => {
     if (currentPageIndex > 0) {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
@@ -150,10 +178,8 @@ const QuestionPage = () => {
     const totalTimeSpent = Math.floor((endTime - startTime) / 1000);
     const progressStatus = currentPageIndex === survey.pages.length - 1 ? 'COMPLETED' : 'STARTED';
     previousSession = userSurveySessionDetail;
-  
-    const finalTimeSpent = previousSession ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent : totalTimeSpent;
-    const finalPercentageComplete = previousSession ? previousSession.userSurveySessionDetail.percentageComplete + value: ((currentPageIndex + 1) / survey.pages.length) * 100;
-  
+    const finalTimeSpent = previousSession.userSurveySessionDetail.timeSpent ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent : totalTimeSpent;
+    const finalPercentageComplete = previousSession.userSurveySessionDetail.percentageComplete ? previousSession.userSurveySessionDetail.percentageComplete + value: ((currentPageIndex + 1) / survey.pages.length) * 100;
     const transformedAnswers = {
       programUserID: 1145,
       id: 0,
@@ -172,7 +198,12 @@ const QuestionPage = () => {
         id: 0
       },
       userAnswerLogs: Object.entries(answers).map(([pageIndex, answer]) => {
-        const question = survey.pages[pageIndex].sections[0].questions[0];
+        const question1 = survey.pages[pageIndex].sections[0].questions[0];
+        const question2 = survey.pages[pageIndex].sections[1]?.questions[0];
+        const question = {
+          ...question1,
+          ...question2,
+        };
         const answerFreeText = answer.systolic && answer.diastolic 
           ? `${answer.systolic}/${answer.diastolic}`
           : Array.isArray(answer.question) 
@@ -206,7 +237,7 @@ const QuestionPage = () => {
   const handleSave = () => {
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData-----'); 
-    //dispatch(saveSurveyResponse(transformedData));
+    dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate(`/different-page`);
   };
@@ -237,7 +268,9 @@ const QuestionPage = () => {
       }));
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } }));
   
-    } else if (question.answerType === 'SLIDER_WITH_SCALE') {
+    } 
+    
+    else if (question.answerType === 'SLIDER_WITH_SCALE') {
       setUserAnswer((prevAnswer) => ({
         ...prevAnswer,
         slider: value,
@@ -269,7 +302,7 @@ const QuestionPage = () => {
     setIsModalOpen(false);
     const transformedData = transformAnswersToRequiredFormat();
     console.log(transformedData,'----transformedData not full-----'); 
-    //dispatch(saveSurveyResponse(transformedData));
+    dispatch(saveSurveyResponse(transformedData));
     setShowResults(true);
     navigate('/');
   };
@@ -453,6 +486,7 @@ const QuestionPage = () => {
                 <ReactQuill
                   className="large-text-editor"
                   value={userAnswer.richText || ''}
+                  name="richText"
                   onChange={handleRichTextChange}
                 />
               );
@@ -521,7 +555,7 @@ const QuestionPage = () => {
                         min={0}
                         max={10}
                         step={1}
-                        value={userAnswer.slider || 0}
+                        value={userAnswer.slider || selectedScaleValue}
                         onChange={(value) => handleAnswerChange({ target: { name: 'slider', value } })}
                       />
                       <div className="slider-scale">
@@ -537,7 +571,7 @@ const QuestionPage = () => {
           case 'DROP_DOWN':
             return (
               <div>
-                <select name="dropdown" onChange={handleAnswerChange} value={userAnswer.dropdown || ''}>
+                <select name="dropdown" onChange={handleAnswerChange} value={userAnswer.dropdown || selectedValue}>
                   {question.choices.map((choice) => (
                     <option key={choice.id} value={choice.id}>
                       {choice.text}
