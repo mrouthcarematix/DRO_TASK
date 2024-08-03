@@ -102,12 +102,7 @@ const QuestionPage = () => {
                 answer = { time: log.answerFreeText };
                 dispatch(setAnswer({ pageIndex: 14, answer }))
               }
-              //mappedAnswers[log.questionId] = answer;
             });
-  
-            // Object.entries(mappedAnswers).forEach(([questionId, answer]) => {
-            //   dispatch(setAnswer({ questionId: parseInt(questionId), answer }));
-            // });
           })
           .catch((error) => {
             console.error('Error fetching survey:', error);
@@ -139,8 +134,6 @@ const QuestionPage = () => {
   if (!page || !page.sections || !page.sections[0] || !page.sections[0].questions || !page.sections[0].questions[0]) {
     return <div>Invalid survey structure</div>;
   }
-
-  //const question = page.sections[0].questions[0];
   const question1 = page.sections[0].questions[0];
   const question2 = page.sections[1]?.questions[0];
   const question = {
@@ -159,7 +152,19 @@ const QuestionPage = () => {
   const handleNext = () => {
     
     if (question.answerType == 'RICH_TEXT') {
-      if (!userAnswer.richText || userAnswer.richText.trim() === '') {
+      if (!userAnswer.richText || userAnswer.richText.trim() == '' || userAnswer.richText.trim() == '<p><br></p>') {
+        setErrorMessage('This question is required.');
+        return;
+      }
+    }
+    if (question.answerType == 'BP') {
+      if (!userAnswer.diastolic || !userAnswer.systolic) {
+        setErrorMessage('This question is required.');
+        return;
+      }
+    }
+    if (question.answerType == 'SLIDER_WITH_SCALE') {
+      if (!userAnswer.slider) {
         setErrorMessage('This question is required.');
         return;
       }
@@ -253,11 +258,19 @@ const QuestionPage = () => {
   };
   
   const handleSave = () => {
-    const transformedData = transformAnswersToRequiredFormat();
-    console.log(transformedData,'----transformedData-----'); 
-    dispatch(saveSurveyResponse(transformedData));
-    setShowResults(true);
-    navigate(`/different-page`);
+    if (question.answerType == 'TIME') {
+      if (!userAnswer.time) {
+        setErrorMessage('This question is required.');
+        return;
+      }
+      else{
+        const transformedData = transformAnswersToRequiredFormat();
+        console.log(transformedData,'----transformedData-----'); 
+        dispatch(saveSurveyResponse(transformedData));
+        setShowResults(true);
+        navigate(`/different-page`);
+      }
+    }
   };
 
   const handleSkip = () => {
@@ -336,7 +349,7 @@ const QuestionPage = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      //handleAnswerChange({ target: { name: 'image', value: file } });
+      handleAnswerChange({ target: { name: 'image', value: file } });
     }
   };
 
@@ -534,7 +547,7 @@ const QuestionPage = () => {
                 return (
                   <div>
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Systolic"
                       name="systolic"
                       onChange={handleAnswerChange}
@@ -550,7 +563,7 @@ const QuestionPage = () => {
                       value={userAnswer.systolic || ''}
                     />
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Diastolic"
                       name="diastolic"
                       onChange={handleAnswerChange}
