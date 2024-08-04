@@ -17,6 +17,7 @@ const Survey = () => {
   const selectedLanguage = location.state?.selectedLanguage || 'EN';
   const characterLimit = 25;
   const [expandedInstructions, setExpandedInstructions] = useState({});
+  const [language, setLanguage] = useState(selectedLanguage);
 
   useEffect(() => {
     const loadData = async () => {
@@ -60,7 +61,7 @@ const Survey = () => {
         if (progressStatus === 'NOT_STARTED') {
           navigate('/start');
         } else if (progressStatus === 'EXPIRED' || progressStatus === 'STARTED') {
-          navigate(`/question/${count}`);
+          navigate(`/question/${count}`,{ state: { selectedLanguage: language } });
         } else if (progressStatus === 'COMPLETED') {
           navigate('/thankyou');
         }
@@ -76,7 +77,7 @@ const Survey = () => {
 
   const handleContinue = () => {
     if (survey && survey.pages) {
-      navigate(`/question/${currentPage}`);
+      navigate(`/question/${currentPage}`,{ state: { selectedLanguage: language } });
     } else {
       console.error('Survey pages are undefined');
     }

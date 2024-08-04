@@ -9,7 +9,7 @@ import StarRatings from 'react-star-ratings';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faInfoCircle,faHome} from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import customVideoUploadIcon from '../assets/image/camera.png';
@@ -34,9 +34,12 @@ const QuestionPage = () => {
   const [startTime, setStartTime] = useState(Date.now());
   const [timeSpent, setTimeSpent] = useState(0);
   const selectedLanguage = location.state?.selectedLanguage || 'EN';
+  const [language, setLanguage] = useState(selectedLanguage);
   const [userSurveySessionDetail, setUserSurveySessionDetail] = useState(null);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedScaleValue, setselectedScaleValue] = useState('');
+  const [surveyName, setSurveyName] = useState('');
+  const [dataVal, setDataVal] = useState(null);
 
 
   useEffect(() => {
@@ -44,6 +47,8 @@ const QuestionPage = () => {
       const resultAction = await dispatch(fetchDashboardData({ language: selectedLanguage }));
       if (fetchDashboardData.fulfilled.match(resultAction)) {
         const [userSurveySessionId, dataVal] = resultAction.payload;
+        setDataVal(dataVal);
+        setSurveyName(dataVal.userSurveySessions[0].surveyName);
         dispatch(fetchSurveySession(userSurveySessionId))
           .unwrap()
           .then((result) => {
@@ -94,13 +99,13 @@ const QuestionPage = () => {
               } else if (log.questionId == 2785) {
                 answer = { dropdown: log.answerFreeText };
                 setSelectedValue(log.answerFreeText);
-                dispatch(setAnswer({ pageIndex: 12, answer }))
+                dispatch(setAnswer({ pageIndex: 11, answer }))
               } else if (log.questionId == 2786) {
                 answer = { date: log.answerFreeText };
-                dispatch(setAnswer({ pageIndex: 13, answer }))
+                dispatch(setAnswer({ pageIndex: 12, answer }))
               } else if (log.questionId == 2787) {
                 answer = { time: log.answerFreeText };
-                dispatch(setAnswer({ pageIndex: 14, answer }))
+                dispatch(setAnswer({ pageIndex: 13, answer }))
               }
             });
           })
@@ -136,15 +141,20 @@ const QuestionPage = () => {
   }
   const question1 = page.sections[0].questions[0];
   const question2 = page.sections[1]?.questions[0];
+  console.log(question1,'----question1----');
+  console.log(question2,'----question2----');
+  
   const question = {
-    ...question1,
     ...question2,
+    ...question1,
   };
+  console.log(question,'----question----');
+  console.log(typeof(question),'----question----');
   const handlePrevious = () => {
     if (currentPageIndex > 0) {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
       dispatch(prevPage());
-      navigate(`/question/${currentPageIndex - 1}`);
+      navigate(`/question/${currentPageIndex - 1}`,{ state: { selectedLanguage: language } });
     }
     setErrorMessage('');
   };
@@ -186,7 +196,7 @@ const QuestionPage = () => {
     dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
     if (currentPageIndex < survey.pages.length - 1) {
       dispatch(nextPage());
-      navigate(`/question/${currentPageIndex + 1}`);
+      navigate(`/question/${currentPageIndex + 1}`,{ state: { selectedLanguage: language } });
     }
   };
 
@@ -224,8 +234,8 @@ const QuestionPage = () => {
         const question1 = survey.pages[pageIndex].sections[0].questions[0];
         const question2 = survey.pages[pageIndex].sections[1]?.questions[0];
         const question = {
-          ...question1,
           ...question2,
+          ...question1,
         };
         const answerFreeText = answer.systolic && answer.diastolic 
           ? `${answer.systolic}/${answer.diastolic}`
@@ -276,7 +286,7 @@ const QuestionPage = () => {
   const handleSkip = () => {
     setErrorMessage('');
     dispatch(nextPage());
-    navigate(`/question/${currentPageIndex + 1}`);
+    navigate(`/question/${currentPageIndex + 1}`,{ state: { selectedLanguage: language }});
   };
 
   const handleAnswerChange = (event) => {
@@ -609,8 +619,35 @@ const QuestionPage = () => {
                     </option>
                   ))}
                 </select>
+                {/* <span></span>
+                {survey.pages[pageIndex].sections[1]?.questions[0].text}
+                {survey.pages[pageIndex].sections[1]?.questions[0].helpText && (
+              <>
+                <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
+                {showHelpText && <span className="help-text">{survey.pages[pageIndex].sections[1]?.questions[0].helpText}</span>}
+              </>
+            )}
+                {survey.pages[pageIndex].sections[1]?.questions[0].choices.map((choice) => {
+                    const choiceIdString = String(choice.id); 
+                    return (
+                      <div key={choice.id}>
+                        <input
+                          type="radio"
+                          id={choice.id}
+                          name="question"
+                          value={choice.id}
+                          onChange={handleAnswerChange}
+                          checked={userAnswer.question == choice.id}
+                        />
+                        <label htmlFor={choice.id}>{choice.text}</label>
+                      </div>
+                    );
+                  })} */}
+                
               </div>
-            );
+             
+          
+          );
           case 'DATE':
             return (
               <div>
@@ -644,56 +681,49 @@ const QuestionPage = () => {
     <div className="question-page">
       {renderErrorMessage()}
       <div className="header">
-        <h1 className="title">Sample PRO</h1>
-        <p className="subtitle">Internal : Normal Scheduled RU ZH</p>
-        <hr className="divider" />
-        <div className="question-progress">
-          <span className="question-number">Question {currentPageIndex + 1} of {survey.pages.length}</span>
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${calculateProgress()}%` }}></div>
-          </div>
-          <div className="navigation-buttons">
-            <button className="close-button" onClick={handleOpenModal}>
-              <FontAwesomeIcon icon={faTimes} />
+        <div className="home-icon">
+          <FontAwesomeIcon icon={faHome} className="close-icon"/>
+          <span className="close-text">DRO Home</span>
+        </div>
+        <button className="close-button" onClick={handleOpenModal}>
+          <FontAwesomeIcon icon={faTimes} className="close-icon" />
+          <span className="close-text">Close DRO</span>
+        </button>
+      </div>
+      <h1 className="title">{surveyName}</h1>
+      <p className="survey-subtitle">
+        <span className="organization-name">{survey?.programInfo?.organizationName}</span>
+          {' : '}
+        <span className="program-name">{survey?.programInfo?.programName}</span>
+      </p>
+      <hr className="divider" />
+      <div className="question-progress">
+        <span className="question-number">Question {currentPageIndex + 1} of {survey.pages.length}</span>
+        <div className="progress-bar">
+          <div className="progress" style={{ width: `${calculateProgress()}%` }}></div>
+        </div>
+        <div className="navigation-buttons">
+          {currentPageIndex > 0 && (
+            <button onClick={handlePrevious} className="nav-button previous">
+              {t('previous')}
             </button>
-            <Modal show={isModalOpen} onHide={handleCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirm Navigation</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                Are you sure you want to leave this page? Your answers will be saved.
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
-                  Cancel
-                </Button>
-                <Button variant="primary" onClick={handleConfirmClose}>
-                  Confirm
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            {currentPageIndex > 0 && (
-              <button onClick={handlePrevious} className="nav-button">
-                {t('previous')}
+          )}
+          {currentPageIndex < survey.pages.length - 1 ? (
+            <>
+              <button onClick={handleNext} className="nav-button next">
+                {t('next')}
               </button>
-            )}
-            {currentPageIndex < survey.pages.length - 1 ? (
-              <>
-                <button onClick={handleNext} className="nav-button">
-                  {t('next')}
-                </button>
-                {['IMAGE_UPLOAD', 'VIDEO_UPLOAD', 'AUDIO_UPLOAD'].includes(question.answerType) && (
-                  <button onClick={handleSkip} className="nav-button">
-                    {t('skip')}
-                  </button>
-                )}
-              </>
-            ) : (
-              <button onClick={handleSave} className="nav-button">
-                {t('save')}
-              </button>
-            )}
-          </div>
+              {['IMAGE_UPLOAD', 'VIDEO_UPLOAD', 'AUDIO_UPLOAD'].includes(question.answerType) && (
+                <a href='javascript:void(0)' onClick={handleSkip} className="skip-text">
+                  {t('skip')}
+                </a>
+              )}
+            </>
+          ) : (
+            <button onClick={handleSave} className="nav-button next">
+              {t('save')}
+            </button>
+          )}
         </div>
       </div>
       <div className="content">
@@ -712,12 +742,22 @@ const QuestionPage = () => {
           </div>
         </div>
       </div>
-      {/* {showResults && (
-        <div className="results">
-          <h3>{t('results')}</h3>
-        
-        </div>
-      )} */}
+      <Modal show={isModalOpen} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Navigation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to leave this page? Your answers will be saved.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirmClose}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

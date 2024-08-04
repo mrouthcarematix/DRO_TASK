@@ -1,15 +1,22 @@
 .question-page {
   font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* Gray background for the body section */
 }
 
 .header {
   padding: 10px;
   position: relative;
+  background-color: #000; /* Black background for the header */
+  color: #fff; /* White text color for the header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
   font-size: 24px;
   font-weight: bold;
+  margin-top: 32px;
 }
 
 .subtitle {
@@ -22,6 +29,7 @@
   border: none;
   border-top: 1px solid #e0e0e0;
   margin-bottom: 20px;
+  opacity: 1.25;
 }
 
 .question-progress {
@@ -38,7 +46,7 @@
 .progress-bar {
   flex: 1;
   height: 10px;
-  background-color: #e0e0e0;
+  background-color: #e0e0e0 !important; /* Gray background for the progress bar */
   border-radius: 5px;
   overflow: hidden;
   margin-right: 10px;
@@ -48,6 +56,7 @@
   height: 100%;
   background-color: #4caf50 !important; /* Ensuring green color for the progress bar */
 }
+
 .navigation-buttons {
   display: flex;
   margin-top: 20px;
@@ -57,7 +66,7 @@
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 7px 20px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
@@ -68,9 +77,27 @@
   background-color: #0056b3;
 }
 
+.nav-button.previous {
+  background-color: #007bff; /* Gray background for the previous button */
+  margin-left: 0; /* Remove left margin for the first button */
+}
+
+.nav-button.previous:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
+.nav-button.next {
+  background-color: #007bff; /* Blue background for the next button */
+}
+
+.nav-button.next:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
 .content {
   padding: 20px;
   position: relative;
+  background-color: #f0f0f0; /* Ensuring gray background for the content section */
 }
 
 .error-message {
@@ -96,7 +123,7 @@
 }
 
 .question-section {
-  background-color: #f9f9f9;
+  background-color: #f0f0f0; /* Updated to match the body background color */
   padding: 20px;
   border-radius: 5px;
 }
@@ -104,6 +131,12 @@
 .question-text {
   font-size: 16px;
   margin-bottom: 20px;
+}
+
+.question-content {
+  background-color: #f0f0f0; /* Ensure this section has gray background */
+  padding: 20px;
+  border-radius: 5px;
 }
 
 .info-button {
@@ -135,31 +168,35 @@
   font-size: 14px;
 }
 
-
-/* Style for the close button */
+/* Style for the close button with black background and DRO Home text and icon */
 .close-button {
-  background-color: transparent; /* No background */
+  background-color: #000; /* Black background */
   border: none; /* No border */
-  font-size: 24px; /* Adjust size as needed */
+  font-size: 16px; /* Adjust size as needed */
   cursor: pointer; /* Pointer cursor on hover */
-  padding: 0; /* No padding */
-  margin: 0; /* No margin */
+  padding: 10px; /* Padding for better spacing */
+  color: #fff; /* White text color */
+  display: flex; /* Center the text and icon */
+  align-items: center; /* Center the text and icon */
+  justify-content: center; /* Center the text and icon */
   position: absolute; /* Positioning */
-  top: 10px; /* Adjust positioning as needed */
+  top: 0px; /* Adjust positioning as needed */
   right: 10px; /* Adjust positioning as needed */
-  display: flex; /* Center the icon */
-  align-items: center; /* Center the icon */
-  justify-content: center; /* Center the icon */
-  color: #000; /* Icon color */
+  border-radius: -5px; /* Rounded corners */
 }
 
 .close-button:hover {
-  color: #ff0000; /* Change color on hover */
+  background-color: #444; /* Darker black on hover */
 }
 
 /* If you use an icon font like FontAwesome */
 .close-button i {
   font-family: 'FontAwesome'; /* Or your icon font */
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.close-icon {
+  margin-right: 5px; /* Space between icon and text */
 }
 
 .video-upload-container {
@@ -167,7 +204,7 @@
 }
 
 .video-upload-section {
-  background-color: white;
+  background-color: #f0f0f0; /* Ensure this section has gray background */
   border: 2px dashed #007bff;
   padding: 20px;
   text-align: center;
@@ -210,6 +247,7 @@
   color: #555;
   margin-bottom: 10px;
 }
+
 .image-preview {
   margin-top: 10px;
 }
@@ -226,4 +264,21 @@
 
 .large-text-editor .ql-editor {
   height: 300px; /* Adjust the height of the editor area */
+}
+
+/* Additional styling for the home icon and text */
+.home-icon {
+  display: flex;
+  align-items: center;
+  color: #fff; /* White color for the home icon and text */
+}
+
+.home-icon i {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.skip-text {
+  font-size: 26px;
+  color: #555;
+  margin-left: 13px;
 }
