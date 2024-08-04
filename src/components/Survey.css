@@ -31,11 +31,23 @@
   font-weight: bold;
 }
 
+.organization-name {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 300;
+}
+
+.program-name {
+  font-size: 1rem;
+  color: #666;
+  font-style: itaboldlic;
+}
+
 /* Estimated Time */
 .estimated-time {
   font-size: 1rem;
   color: #6c757d;
-  margin-left: 555px;
+  margin-left: 635px;
 }
 
 .estimated-time-value{
@@ -48,7 +60,7 @@
 .survey-intro {
   font-size: 1rem;
   margin-bottom: 2rem;
-  margin-left: -242px;
+  margin-left: -210px;
   font-weight: bold;
 }
 
@@ -91,7 +103,7 @@
   font-size: 1rem;
   color: #555;
   margin-bottom: 1rem;
-  font-weight:bold;
+  font-weight:400;
 }
 
 .see-more-link {
@@ -104,4 +116,12 @@
   text-decoration: underline;
 }
 
+@keyframes slideUpLeft {
+  0% {
+    transform: translateY(100px) translateX(0);
+  }
+  100% {
+    transform: translateY(0) translateX(-20px);
+  }
+}
 

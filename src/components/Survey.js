@@ -15,6 +15,8 @@ const Survey = () => {
   const [dataVal, setDataVal] = useState(null);
   const [surveyName, setSurveyName] = useState('');
   const selectedLanguage = location.state?.selectedLanguage || 'EN';
+  const characterLimit = 25;
+  const [expandedInstructions, setExpandedInstructions] = useState({});
 
   useEffect(() => {
     const loadData = async () => {
@@ -79,13 +81,30 @@ const Survey = () => {
       console.error('Survey pages are undefined');
     }
   };
+  const truncateText = (text, limit) => {
+    if (text.length > limit) {
+      return text.substring(0, limit) + '...';
+    }
+    return text;
+  };
+
+  const handleToggleExpand = (index) => {
+    setExpandedInstructions(prevState => ({
+      ...prevState,
+      [index]: !prevState[index]
+    }));
+  };
 
   return (
     <div className="container survey-container">
       <div className="survey-header">
         <div>
           <h1 className="survey-title">{surveyName}</h1>
-          <p className="survey-subtitle">{survey?.programInfo?.organizationName} : {survey?.programInfo?.programName}</p>
+          <p className="survey-subtitle">
+            <span className="organization-name">{survey?.programInfo?.organizationName}</span>
+            {' : '}
+            <span className="program-name">{survey?.programInfo?.programName}</span>
+          </p>
         </div>
         <p className="estimated-time">{t('estimatedTimeToComplete')} :</p> <p className="estimated-time-value">{'10 mins'}</p>
       </div>
@@ -103,8 +122,23 @@ const Survey = () => {
                   className="instruction-icon" 
                   onError={(e) => e.target.src = doctorCheckupImage}
                 />
-                <p className="card-text">{instruction.description}</p>
-                <a href="#" className="see-more-link">{t('seeMore')}</a>
+                <p className="card-text">
+                  {expandedInstructions[index] || instruction.description.length <= characterLimit
+                    ? instruction.description
+                    : truncateText(instruction.description, characterLimit)
+                  }
+                  {instruction.description.length > characterLimit && (
+                    <p
+                      className="see-more-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToggleExpand(index);
+                      }}
+                    >
+                      {expandedInstructions[index] ? t('seeLess') : t('seeMore')}
+                    </p>
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -116,12 +150,12 @@ const Survey = () => {
         style={{
           backgroundColor: '#ff8c00',
           borderColor: '#ff8c00',
-          bottom: '1rem',
+          bottom: '4rem',
           color: 'white',
           position: 'absolute',
-          right: '2rem',
-          fontSize: '1.25rem',
-          padding: '0.75rem 2rem',
+          right: '4rem',
+          fontSize: '1.2rem',
+          padding: '-0.25rem 2rem',
           borderRadius: '5px',
         }}
       >
