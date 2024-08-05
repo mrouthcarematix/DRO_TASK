@@ -66,6 +66,7 @@ const QuestionPage = () => {
                 date: '',
                 time: ''
               };
+              console.log(log,'---log---');
               if (log.questionId == 2774) {
                 answer = { question: log.choiceId ? String(log.choiceId) : '' };
                 dispatch(setAnswer({ pageIndex: 0, answer }))
@@ -141,15 +142,10 @@ const QuestionPage = () => {
   }
   const question1 = page.sections[0].questions[0];
   const question2 = page.sections[1]?.questions[0];
-  console.log(question1,'----question1----');
-  console.log(question2,'----question2----');
-  
   const question = {
     ...question2,
     ...question1,
   };
-  console.log(question,'----question----');
-  console.log(typeof(question),'----question----');
   const handlePrevious = () => {
     if (currentPageIndex > 0) {
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: userAnswer }));
@@ -200,19 +196,119 @@ const QuestionPage = () => {
     }
   };
 
+  // const transformAnswersToRequiredFormat = () => {
+  //   let previousSession;
+  //   let value = 0;
+  //   if (userSurveySessionDetail) {
+  //       previousSession=userSurveySessionDetail;
+  //       value = (100 - previousSession.userSurveySessionDetail.percentageComplete);
+  //     }
+  //   const endTime = Date.now();
+  //   const totalTimeSpent = Math.floor((endTime - startTime) / 1000);
+  //   const progressStatus = currentPageIndex === survey.pages.length - 1 ? 'COMPLETED' : 'STARTED';
+  //   previousSession = userSurveySessionDetail;
+  //   const finalTimeSpent = previousSession.userSurveySessionDetail.timeSpent ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent : totalTimeSpent;
+  //   const finalPercentageComplete = previousSession.userSurveySessionDetail.percentageComplete ? previousSession.userSurveySessionDetail.percentageComplete + value: ((currentPageIndex + 1) / survey.pages.length) * 100;
+  //   const transformedAnswers = {
+  //     programUserID: 1145,
+  //     id: 0,
+  //     programSurveyId: 1075,
+  //     pageNavigations: survey.pages.map((page, index) => ({
+  //       previousPageId: index === 0 ? 0 : survey.pages[index - 1].id,
+  //       currentPageId: page.id,
+  //       nextPageId: index === survey.pages.length - 1 ? 0 : survey.pages[index + 1].id,
+  //     })),
+  //     scheduledSession: {
+  //       userScheduleAssignId: 0,
+  //       scheduledDate: 0,
+  //       startTime: Date.now(),
+  //       endTime: Date.now() + 7200000,
+  //       scheduleType: "UNSCHEDULED",
+  //       id: 0
+  //     },
+  //     userAnswerLogs: Object.entries(answers).map(([pageIndex, answer]) => {
+  //       const question1 = survey.pages[pageIndex].sections[0].questions[0];
+  //       const question2 = survey.pages[pageIndex].sections[1]?.questions[0];
+  //       const question = {
+  //         ...question2,
+  //         ...question1,
+  //       };
+  //       const answerFreeText = answer.systolic && answer.diastolic 
+  //         ? `${answer.systolic}/${answer.diastolic}`
+  //         : Array.isArray(answer.question) 
+  //         ? answer.question.join(',')
+  //         : answer.slider || answer.rating || answer.richText || answer.dropdown || answer.date || answer.time || '';
+  //       // return {
+  //       //   choiceId: Number(answer.question) || 0,
+  //       //   questionId: question.id,
+  //       //   id: 0,
+  //       //   answerFreeText,
+  //       //   fileId: 0,
+  //       //   score: question.score || 0
+  //       // };
+  //       if (pageIndex == 11) {
+  //         return [
+  //           {
+  //             choiceId: Number(answer.question) || 0,
+  //             questionId: question.id,
+  //             id: 0,
+  //             answerFreeText:'',
+  //             fileId: 0,
+  //             score: question.score || 0,
+  //           },
+  //           {
+  //             choiceId: 0,
+  //             questionId: question.id,
+  //             id: 0,
+  //             answerFreeText,
+  //             fileId: 0,
+  //             score: 0,
+  //           }
+  //         ];
+  //       } else {
+  //         return {
+  //           choiceId: Number(answer.question) || 0,
+  //           questionId: question.id,
+  //           id: 0,
+  //           answerFreeText,
+  //           fileId: 0,
+  //           score: question.score || 0,
+  //         };
+  //       }
+  //     }),
+  //     userSurveySessionDetail: {
+  //       endTime: endTime,
+  //       lastSubmissionTime: endTime,
+  //       timeSpent: finalTimeSpent,
+  //       declined: false,
+  //       progressStatus: progressStatus,
+  //       lastAnswerPageId: survey.pages[currentPageIndex].id,
+  //       startTime: startTime,
+  //       percentageComplete: finalPercentageComplete,
+  //       id: 0
+  //     },
+  //     unscheduled: true
+  //   };
+  //   return transformedAnswers;
+  // };
   const transformAnswersToRequiredFormat = () => {
     let previousSession;
     let value = 0;
     if (userSurveySessionDetail) {
-        previousSession=userSurveySessionDetail;
-        value = (100 - previousSession.userSurveySessionDetail.percentageComplete);
-      }
+      previousSession = userSurveySessionDetail;
+      value = 100 - previousSession.userSurveySessionDetail.percentageComplete;
+    }
     const endTime = Date.now();
     const totalTimeSpent = Math.floor((endTime - startTime) / 1000);
     const progressStatus = currentPageIndex === survey.pages.length - 1 ? 'COMPLETED' : 'STARTED';
     previousSession = userSurveySessionDetail;
-    const finalTimeSpent = previousSession.userSurveySessionDetail.timeSpent ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent : totalTimeSpent;
-    const finalPercentageComplete = previousSession.userSurveySessionDetail.percentageComplete ? previousSession.userSurveySessionDetail.percentageComplete + value: ((currentPageIndex + 1) / survey.pages.length) * 100;
+    const finalTimeSpent = previousSession.userSurveySessionDetail.timeSpent
+      ? previousSession.userSurveySessionDetail.timeSpent + totalTimeSpent
+      : totalTimeSpent;
+    const finalPercentageComplete = previousSession.userSurveySessionDetail.percentageComplete
+      ? previousSession.userSurveySessionDetail.percentageComplete + value
+      : ((currentPageIndex + 1) / survey.pages.length) * 100;
+  
     const transformedAnswers = {
       programUserID: 1145,
       id: 0,
@@ -227,30 +323,51 @@ const QuestionPage = () => {
         scheduledDate: 0,
         startTime: Date.now(),
         endTime: Date.now() + 7200000,
-        scheduleType: "UNSCHEDULED",
-        id: 0
+        scheduleType: 'UNSCHEDULED',
+        id: 0,
       },
-      userAnswerLogs: Object.entries(answers).map(([pageIndex, answer]) => {
+      userAnswerLogs: Object.entries(answers).reduce((acc, [pageIndex, answer]) => {
         const question1 = survey.pages[pageIndex].sections[0].questions[0];
         const question2 = survey.pages[pageIndex].sections[1]?.questions[0];
         const question = {
           ...question2,
           ...question1,
         };
-        const answerFreeText = answer.systolic && answer.diastolic 
+        const answerFreeText = answer.systolic && answer.diastolic
           ? `${answer.systolic}/${answer.diastolic}`
-          : Array.isArray(answer.question) 
+          : Array.isArray(answer.question)
           ? answer.question.join(',')
           : answer.slider || answer.rating || answer.richText || answer.dropdown || answer.date || answer.time || '';
-        return {
-          choiceId: Number(answer.question) || 0,
-          questionId: question.id,
-          id: 0,
-          answerFreeText,
-          fileId: 0,
-          score: question.score || 0
-        };
-      }),
+  
+        if (pageIndex == 11) {
+          acc.push({
+            choiceId: Number(answer.question) || 0,
+            questionId: 2918,
+            id: 0,
+            answerFreeText:'',
+            fileId: 0,
+            score: question.score || 0,
+          });
+          acc.push({
+            choiceId: 0,
+            questionId: question.id,
+            id: 0,
+            answerFreeText,
+            fileId: 0,
+            score: 0,
+          });
+        } else {
+          acc.push({
+            choiceId: Number(answer.question) || 0,
+            questionId: question.id,
+            id: 0,
+            answerFreeText,
+            fileId: 0,
+            score: question.score || 0,
+          });
+        }
+        return acc;
+      }, []),
       userSurveySessionDetail: {
         endTime: endTime,
         lastSubmissionTime: endTime,
@@ -260,13 +377,12 @@ const QuestionPage = () => {
         lastAnswerPageId: survey.pages[currentPageIndex].id,
         startTime: startTime,
         percentageComplete: finalPercentageComplete,
-        id: 0
+        id: 0,
       },
-      unscheduled: true
+      unscheduled: true,
     };
     return transformedAnswers;
   };
-  
   const handleSave = () => {
     if (question.answerType == 'TIME') {
       if (!userAnswer.time) {
@@ -323,9 +439,13 @@ const QuestionPage = () => {
         ...prevAnswer,
         [name]: value,
       }));
+      const answerToDispatch = { pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } };
+      console.log('Dispatching setAnswer with:', answerToDispatch);
       dispatch(setAnswer({ pageIndex: currentPageIndex, answer: { ...userAnswer, [name]: value } }));
+      //console.log(setAnswer,'-setAnswer-----------');
     }
   };
+
   
   const calculateProgress = () => {
     return ((currentPageIndex + 1) / survey.pages.length) * 100;
@@ -619,16 +739,15 @@ const QuestionPage = () => {
                     </option>
                   ))}
                 </select>
-                {/* <span></span>
+                <p class="drop-down-text">
                 {survey.pages[pageIndex].sections[1]?.questions[0].text}
                 {survey.pages[pageIndex].sections[1]?.questions[0].helpText && (
-              <>
-                <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
-                {showHelpText && <span className="help-text">{survey.pages[pageIndex].sections[1]?.questions[0].helpText}</span>}
-              </>
-            )}
-                {survey.pages[pageIndex].sections[1]?.questions[0].choices.map((choice) => {
-                    const choiceIdString = String(choice.id); 
+                  <>
+                    <FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />
+                    {showHelpText && <span className="help-text">{survey.pages[pageIndex].sections[1]?.questions[0].helpText}</span>}
+                  </>
+                )}</p>
+                {survey.pages[pageIndex].sections[1]?.questions[0].choices.map((choice) => { 
                     return (
                       <div key={choice.id}>
                         <input
@@ -642,11 +761,8 @@ const QuestionPage = () => {
                         <label htmlFor={choice.id}>{choice.text}</label>
                       </div>
                     );
-                  })} */}
-                
+                  })}
               </div>
-             
-          
           );
           case 'DATE':
             return (
