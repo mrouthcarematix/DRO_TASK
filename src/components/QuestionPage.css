@@ -112,14 +112,12 @@
 }
 
 .optional-message {
-  color: #4caf50; /* Green color for optional message */
-  background-color: #e8f5e9; /* Light green background for better visibility */
-  border: 1px solid #4caf50; /* Border to emphasize the message */
+  background-color: #b5aca9; /* Light green background for better visibility */
   padding: 10px 20px; /* Padding for better spacing */
   border-radius: 5px; /* Rounded corners */
   margin-bottom: 1rem; /* Spacing below the message */
   font-size: 16px; /* Slightly larger font for readability */
-  text-align: center; /* Center align the text */
+  text-align: left; /* Center align the text */
 }
 
 .question-section {

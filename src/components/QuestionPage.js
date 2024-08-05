@@ -789,7 +789,7 @@ const QuestionPage = () => {
       return <div className="error-message">{errorMessage}</div>;
     }
     if (['IMAGE_UPLOAD', 'VIDEO_UPLOAD', 'AUDIO_UPLOAD'].includes(question.answerType)) {
-      return <div className="optional-message">This question is not mandatory. You can skip.</div>;
+      return <div className="optional-message"><FontAwesomeIcon icon={faInfoCircle} onClick={() => setShowHelpText(!showHelpText)} style={{ cursor: 'pointer' }} />This question is not mandatory. You can skip.</div>;
     }
     return null;
   };
